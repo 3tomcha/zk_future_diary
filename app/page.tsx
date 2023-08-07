@@ -20,8 +20,8 @@ export default function Home() {
 
   return (
     <IDKitWidget
-      app_id='app_GBkZ1KlVUdFTjeMXKlVUdFT'
-      action="claim_nft"
+      app_id='app_staging_abe19aaaafb96a06a7c45fc82138fe88'
+      action="test"
       signal={address}
       onSuccess={onSuccess}
       credential_types={[CredentialType.Orb]}
