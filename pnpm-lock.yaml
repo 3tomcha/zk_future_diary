@@ -4,6 +4,9 @@ dependencies:
   '@ethersproject/abi':
     specifier: ^5.7.0
     version: 5.7.0
+  '@ethersproject/bignumber':
+    specifier: ^5.7.0
+    version: 5.7.0
   '@types/node':
     specifier: 20.4.7
     version: 20.4.7

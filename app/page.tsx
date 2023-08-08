@@ -3,7 +3,6 @@ import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { IDKitWidget, CredentialType, ISuccessResult } from "@worldcoin/idkit"
 import { useEffect, useState } from 'react';
-import { utils } from 'ethers';
 import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http } from "viem";
 import { goerli } from "viem/chains";
@@ -13,7 +12,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [successResult, setSuccessResult] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x75CB0C5E5FF44F83854EE6C5245225a41F2EfB99";
+  const contractAddress = "0x8237Ef58F472220f2cad5bc99A17527897d464bC";
 
   const submit = async () => {
     if (!address) {
@@ -30,9 +29,9 @@ export default function Home() {
         transport: http(),
       })
 
-      const merkleRoot = decode<utils.BigNumber>('uint256', successResult.merkle_root);
-      const nullifierHash = decode<utils.BigNumber>('uint256', successResult.nullifier_hash);
-      const proof = decode<[utils.BigNumber, utils.BigNumber, utils.BigNumber, utils.BigNumber, utils.BigNumber, utils.BigNumber, utils.BigNumber, utils.BigNumbe]>(
+      const merkleRoot = decode<bigint>('uint256', successResult.merkle_root);
+      const nullifierHash = decode<bigint>('uint256', successResult.nullifier_hash);
+      const proof = decode<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]>(
         'uint256[8]',
         successResult.proof
       )
@@ -41,6 +40,7 @@ export default function Home() {
         abi: ContractAbi,
         functionName: "verifyAndExecute",
         args: [address, merkleRoot, nullifierHash, proof],
+        account: address,
       })
       const hash = await walletClient.writeContract(request)
       console.log(hash)
