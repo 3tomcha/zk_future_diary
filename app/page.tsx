@@ -2,10 +2,10 @@
 import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { IDKitWidget, CredentialType, ISuccessResult } from "@worldcoin/idkit"
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http } from "viem";
-import { goerli } from "viem/chains";
+import { sepolia } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -21,13 +21,8 @@ export default function Home() {
     }
     if (successResult && address) {
       const walletClient = createWalletClient({
-        chain: goerli,
+        chain: sepolia,
         transport: custom((window as any).ethereum)
-      })
-
-      const publicClient = createPublicClient({
-        chain: goerli,
-        transport: http(),
       })
 
       const merkleRoot = decode<BigNumber>('uint256', successResult.merkle_root);
@@ -42,14 +37,13 @@ export default function Home() {
       const proofBigInt = proof.map(value => BigInt(value.toString()));
 
       console.log("cliked");
-      const { request } = await publicClient.simulateContract({
+      const hash = await walletClient.writeContract({
         address: contractAddress,
         abi: ContractAbi,
         functionName: "verifyAndExecute",
         args: [address, merkleRootBigInt, nullifierHashBigInt, [proofBigInt[0], proofBigInt[1], proofBigInt[2], proofBigInt[3], proofBigInt[4], proofBigInt[5], proofBigInt[6], proofBigInt[7]]],
         account: address,
       })
-      const hash = await walletClient.writeContract(request)
       console.log(hash)
     }
   }
