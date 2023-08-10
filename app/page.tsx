@@ -6,13 +6,14 @@ import { useEffect, useState } from 'react';
 import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http } from "viem";
 import { goerli } from "viem/chains";
-import ContractAbi from "./abi/Contract.abi";
+import { ContractAbi } from "./abi/Contract.abi";
+import { BigNumber } from '@ethersproject/bignumber';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
   const [successResult, setSuccessResult] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x8237Ef58F472220f2cad5bc99A17527897d464bC";
+  const contractAddress = "0x75CB0C5E5FF44F83854EE6C5245225a41F2EfB99";
 
   const submit = async () => {
     if (!address) {
@@ -29,17 +30,23 @@ export default function Home() {
         transport: http(),
       })
 
-      const merkleRoot = decode<bigint>('uint256', successResult.merkle_root);
-      const nullifierHash = decode<bigint>('uint256', successResult.nullifier_hash);
-      const proof = decode<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]>(
+      const merkleRoot = decode<BigNumber>('uint256', successResult.merkle_root);
+      const nullifierHash = decode<BigNumber>('uint256', successResult.nullifier_hash);
+      const proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
         'uint256[8]',
         successResult.proof
       )
+
+      const merkleRootBigInt = BigInt(merkleRoot.toString());
+      const nullifierHashBigInt = BigInt(nullifierHash.toString());
+      const proofBigInt = proof.map(value => BigInt(value.toString()));
+
+      console.log("cliked");
       const { request } = await publicClient.simulateContract({
         address: contractAddress,
         abi: ContractAbi,
         functionName: "verifyAndExecute",
-        args: [address, merkleRoot, nullifierHash, proof],
+        args: [address, merkleRootBigInt, nullifierHashBigInt, [proofBigInt[0], proofBigInt[1], proofBigInt[2], proofBigInt[3], proofBigInt[4], proofBigInt[5], proofBigInt[6], proofBigInt[7]]],
         account: address,
       })
       const hash = await walletClient.writeContract(request)
