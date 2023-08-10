@@ -5,7 +5,7 @@ import { IDKitWidget, CredentialType, ISuccessResult } from "@worldcoin/idkit"
 import { useState } from 'react';
 import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http } from "viem";
-import { polygonMumbai } from "viem/chains";
+import { optimismGoerli } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
 import { BigNumber } from '@ethersproject/bignumber';
 
@@ -13,7 +13,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [proof, setproof] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x3A6aF89597F566900B2774C60FF158ceb309ca03";
+  const contractAddress = "0x8f39463DFf15c2aC29DC844D948c9Ad667334Ba2";
 
   const submit = async () => {
     if (!address) {
@@ -21,25 +21,38 @@ export default function Home() {
     }
     if (proof && address) {
       const walletClient = createWalletClient({
-        chain: polygonMumbai,
+        chain: optimismGoerli,
         transport: custom((window as any).ethereum)
       })
 
-      const merkleRoot = decode<BigNumber>('uint256', proof.merkle_root);
-      const nullifierHash = decode<BigNumber>('uint256', proof.nullifier_hash);
-      const _proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
+      const publicClient = createPublicClient({
+        chain: optimismGoerli,
+        transport: http(),
+      })
+
+      const merkleRoot = decode<bigint>('uint256', proof.merkle_root);
+      const nullifierHash = decode<bigint>('uint256', proof.nullifier_hash);
+      const _proof = decode<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]>(
         'uint256[8]',
         proof.proof
       )
+      console.log(_proof[0]);
+      console.log(_proof[1]);
+      console.log(_proof[2]);
+      console.log(_proof[3]);
+      console.log(_proof[4]);
+      console.log(_proof[5]);
+      console.log(_proof[6]);
+      console.log(_proof[7]);
 
-      console.log("cliked");
-      const hash = await walletClient.writeContract({
+      const { request } = await publicClient.simulateContract({
         address: contractAddress,
         abi: ContractAbi,
         functionName: "verifyAndExecute",
-        args: [address, merkleRoot, nullifierHash, [proof.proof[0], proof.proof[1], proof.proof[2], proof.proof[3], proof.proof[4], proof.proof[5], proof.proof[6], proof.proof[7]]],
+        args: [address, merkleRoot, nullifierHash, _proof],
         account: address,
       })
+      const hash = await walletClient.writeContract(request)
       console.log(hash)
     }
   }
@@ -58,7 +71,7 @@ export default function Home() {
       <button onClick={handleConnect}>connect</button>
     </div>}
       <IDKitWidget
-        app_id='app_staging_abe19aaaafb96a06a7c45fc82138fe88'
+        app_id='app_staging_e1b76c940110a7556717585809b51fb1'
         action="test"
         signal={address}
         onSuccess={setproof}

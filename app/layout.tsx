@@ -1,10 +1,10 @@
 'use client';
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
+import { optimismGoerli } from "wagmi/chains";
 import { publicProvider } from 'wagmi/providers/public';
 
 const { publicClient, webSocketPublicClient } = configureChains(
-  [polygonMumbai],
+  [optimismGoerli],
   [publicProvider()]
 )
 
