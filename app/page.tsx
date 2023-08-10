@@ -13,7 +13,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const [proof, setproof] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x8237Ef58F472220f2cad5bc99A17527897d464bC";
+  const contractAddress = "0x3A6aF89597F566900B2774C60FF158ceb309ca03";
 
   const submit = async () => {
     if (!address) {
