@@ -5,43 +5,39 @@ import { IDKitWidget, CredentialType, ISuccessResult } from "@worldcoin/idkit"
 import { useState } from 'react';
 import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http } from "viem";
-import { sepolia } from "viem/chains";
+import { polygonMumbai } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
 import { BigNumber } from '@ethersproject/bignumber';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
-  const [successResult, setSuccessResult] = useState<ISuccessResult | null>(null);
+  const [proof, setproof] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x75CB0C5E5FF44F83854EE6C5245225a41F2EfB99";
+  const contractAddress = "0x8237Ef58F472220f2cad5bc99A17527897d464bC";
 
   const submit = async () => {
     if (!address) {
       await connect();
     }
-    if (successResult && address) {
+    if (proof && address) {
       const walletClient = createWalletClient({
-        chain: sepolia,
+        chain: polygonMumbai,
         transport: custom((window as any).ethereum)
       })
 
-      const merkleRoot = decode<BigNumber>('uint256', successResult.merkle_root);
-      const nullifierHash = decode<BigNumber>('uint256', successResult.nullifier_hash);
-      const proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
+      const merkleRoot = decode<BigNumber>('uint256', proof.merkle_root);
+      const nullifierHash = decode<BigNumber>('uint256', proof.nullifier_hash);
+      const _proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
         'uint256[8]',
-        successResult.proof
+        proof.proof
       )
-
-      const merkleRootBigInt = BigInt(merkleRoot.toString());
-      const nullifierHashBigInt = BigInt(nullifierHash.toString());
-      const proofBigInt = proof.map(value => BigInt(value.toString()));
 
       console.log("cliked");
       const hash = await walletClient.writeContract({
         address: contractAddress,
         abi: ContractAbi,
         functionName: "verifyAndExecute",
-        args: [address, merkleRootBigInt, nullifierHashBigInt, [proofBigInt[0], proofBigInt[1], proofBigInt[2], proofBigInt[3], proofBigInt[4], proofBigInt[5], proofBigInt[6], proofBigInt[7]]],
+        args: [address, merkleRoot, nullifierHash, [proof.proof[0], proof.proof[1], proof.proof[2], proof.proof[3], proof.proof[4], proof.proof[5], proof.proof[6], proof.proof[7]]],
         account: address,
       })
       console.log(hash)
@@ -57,7 +53,7 @@ export default function Home() {
   }
 
   return (
-    <> {successResult && <div>{JSON.stringify(successResult)}
+    <> {proof && <div>{JSON.stringify(proof)}
       <button onClick={submit}>submit</button>
       <button onClick={handleConnect}>connect</button>
     </div>}
@@ -65,7 +61,7 @@ export default function Home() {
         app_id='app_staging_abe19aaaafb96a06a7c45fc82138fe88'
         action="test"
         signal={address}
-        onSuccess={setSuccessResult}
+        onSuccess={setproof}
         credential_types={[CredentialType.Orb]}
         enableTelemetry
       >
