@@ -4,7 +4,7 @@ import pinataSDK from "@pinata/sdk";
 export async function GET(req: NextRequest) {
   const fileName = req.nextUrl.searchParams.get("file_name");
   const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT_KEY })
-  const sourcePath = `./out/${fileName}`;
+  const sourcePath = `./out/${fileName}.png`;
   const options = {
     pinataMetadata: {
       name: fileName,

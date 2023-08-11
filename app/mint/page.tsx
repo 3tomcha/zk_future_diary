@@ -17,6 +17,10 @@ export default function Mint() {
     const res = await fetch(`/api/generate?prompt=${nullifierHash}`)
     console.log(res)
   }
+  const handlePinImage = async () => {
+    const res = await fetch(`/api/pin/image?file_name=${nullifierHash}`)
+    console.log(res)
+  }
 
   const { connect } = useConnect({
     connector: new InjectedConnector
@@ -50,6 +54,7 @@ export default function Mint() {
       <button onClick={mint}>Mint</button>
       <button onClick={handleConnect}>Connect</button>
       <button onClick={handleGenerate}>Generate</button>
+      <button onClick={handlePinImage}>PinImage</button>
     </>
   )
 }
