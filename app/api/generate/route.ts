@@ -1,7 +1,9 @@
 import fetch from 'node-fetch'
 import fs from 'node:fs'
+import { NextRequest } from 'next/server'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const prompt = req.nextUrl.searchParams.get("prompt");
   const engineId = 'stable-diffusion-xl-1024-v1-0'
   const apiHost = process.env.API_HOST ?? 'https://api.stability.ai'
   const apiKey = process.env.STABILITY_API_KEY
@@ -20,7 +22,7 @@ export async function GET() {
       body: JSON.stringify({
         text_prompts: [
           {
-            text: 'A lighthouse on a cliff',
+            text: prompt,
           },
         ],
         cfg_scale: 7,
@@ -47,7 +49,7 @@ export async function GET() {
   const responseJSON = (await response.json()) as GenerationResponse
 
   const image = responseJSON.artifacts[0];
-  const fileName = `./out/v1_txt2img_0.png`;
+  const fileName = `./out/${prompt}.png`;
 
   const dir = './out';
   if (!fs.existsSync(dir)) {
