@@ -1,16 +1,18 @@
 "use client";
-import { SBTContractAddress, targetChain } from "../const/contract"
+import { SBTContractAddress } from "../const/contract"
 import { SBTAbi } from "../abi/SBT.abi";
 import { useAccount, useConnect } from 'wagmi'
-import { createWalletClient, custom, createPublicClient, http, parseAbiItem } from "viem";
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import useClient from "../hooks/useClient";
 
 export default function Mint() {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
 
   const { connect } = useConnect({
     connector: new InjectedConnector
   });
+
+  const { publicClient, walletClient } = useClient();
 
   const handleConnect = async () => {
     await connect();
@@ -22,14 +24,6 @@ export default function Mint() {
       await connect();
     }
 
-    const walletClient = createWalletClient({
-      chain: targetChain,
-      transport: custom((window as any).ethereum),
-    })
-    const publicClient = createPublicClient({
-      chain: targetChain,
-      transport: http(`https://opt-goerli.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
-    })
     const { request } = await publicClient.simulateContract({
       address: SBTContractAddress,
       abi: SBTAbi,
