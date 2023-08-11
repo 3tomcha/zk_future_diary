@@ -4,9 +4,12 @@ import { SBTAbi } from "../abi/SBT.abi";
 import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import useClient from "../hooks/useClient";
+import { useSearchParams } from 'next/navigation'
 
 export default function Mint() {
   const { address } = useAccount();
+  const searchParams = useSearchParams()
+  console.log(searchParams.get("nullifier_hash"))
 
   const { connect } = useConnect({
     connector: new InjectedConnector
