@@ -4,10 +4,14 @@ import "./map.css"
 import 'leaflet/dist/leaflet.css';
 import { useState } from 'react';
 import L from 'leaflet';
+import useClient from "../hooks/useClient";
+import { SBTAbi } from "../abi/SBT.abi";
+import { SBTContractAddress } from "../const/contract";
 
 export default function Map() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const { publicClient } = useClient();
 
   const customIcon = new L.icon({
     iconUrl: 'https://gateway.pinata.cloud/ipfs/QmNYHCzsPVNF3goN7u6yM2kMeVAZhnCc3a1Htx6wHSUtaJ',
@@ -15,6 +19,30 @@ export default function Map() {
     iconAnchor: [22, 94], // アイコンのアンカーポイントを設定
     popupAnchor: [-3, -76] // ポップアップが表示されるポイントを設定
   })
+
+  const getNFTInfo = async () => {
+    const currentTokenId = await publicClient.readContract({
+      address: SBTContractAddress,
+      abi: SBTAbi,
+      functionName: "currentTokenId",
+    })
+    for (let index = 3; index <= currentTokenId; index++) {
+      const res = await publicClient.readContract({
+        address: SBTContractAddress,
+        abi: SBTAbi,
+        functionName: "tokenURI",
+        args: [BigInt(index)],
+      })
+      console.log(res)
+      const res1 = await fetch(`https://gateway.pinata.cloud/ipfs/${res}`);
+      console.log(res1)
+      const json1 = await res1?.json()
+      console.log(json1)
+      const image1 = json1?.image?.split("ipfs://")[1]
+      console.log(image1)
+    }
+  }
+
   const setPosition = () => {
     const hash = "0x5a10d152072832823c38e964E382CD22C00a8d7E";
     const hashNumber = BigInt(hash);
@@ -34,6 +62,7 @@ export default function Map() {
   }
   return (
     <div className="map">
+      <button onClick={getNFTInfo}>getNFTInfo</button>
       <button onClick={setPosition}>setPosition</button>
       <MapContainer center={[35.6895, 139.6917]} zoom={13} scrollWheelZoom={false}>
         <TileLayer
