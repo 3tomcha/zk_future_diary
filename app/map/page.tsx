@@ -8,17 +8,27 @@ import useClient from "../hooks/useClient";
 import { SBTAbi } from "../abi/SBT.abi";
 import { SBTContractAddress } from "../const/contract";
 
+type NFTs = {
+  image: string,
+  latitude: number,
+  longitude: number,
+}[]
+
+const createCustomIcon = (hash: string) => {
+  return new L.Icon({
+    iconUrl: `https://gateway.pinata.cloud/ipfs/${hash}`,
+    iconSize: [100, 100],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
+  });
+}
+
 export default function Map() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const { publicClient } = useClient();
+  const [nfts, setNFTs] = useState<NFTs>();
 
-  const customIcon = new L.icon({
-    iconUrl: 'https://gateway.pinata.cloud/ipfs/QmNYHCzsPVNF3goN7u6yM2kMeVAZhnCc3a1Htx6wHSUtaJ',
-    iconSize: [100, 100], // アイコンのサイズを設定
-    iconAnchor: [22, 94], // アイコンのアンカーポイントを設定
-    popupAnchor: [-3, -76] // ポップアップが表示されるポイントを設定
-  })
 
   const getNFTInfo = async () => {
     const currentTokenId = await publicClient.readContract({
@@ -26,6 +36,7 @@ export default function Map() {
       abi: SBTAbi,
       functionName: "currentTokenId",
     })
+    const nfts = [];
     for (let index = 3; index <= currentTokenId; index++) {
       const res = await publicClient.readContract({
         address: SBTContractAddress,
@@ -40,12 +51,20 @@ export default function Map() {
       console.log(json1)
       const image1 = json1?.image?.split("ipfs://")[1]
       console.log(image1)
-      const latitude = json1?.attribute?.latitude;
-      const longitude = json1?.attribute?.longitude;
+      const latitude = parseFloat(json1?.attribute?.latitude);
+      const longitude = parseFloat(json1?.attribute?.longitude);
       console.log(image1)
       console.log(latitude)
       console.log(longitude)
+      if (latitude && longitude) {
+        nfts.push({
+          image: image1,
+          latitude: latitude,
+          longitude: longitude
+        })
+      }
     }
+    setNFTs(nfts)
   }
 
   const setPosition = () => {
@@ -74,11 +93,17 @@ export default function Map() {
           attribution='&copy; <a href="https://basemaps.cartocdn.com/copyright">Basemaps</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
         />
-        <Marker position={[latitude, longitude]} icon={customIcon}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        {nfts?.map(nft => {
+          const icon = createCustomIcon(nft.image)
+          return (
+            <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={nft.latitude}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          )
+        }
+        )}
       </MapContainer>
     </div>
   )
