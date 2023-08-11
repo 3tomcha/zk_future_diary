@@ -4,16 +4,15 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { IDKitWidget, CredentialType, ISuccessResult } from "@worldcoin/idkit"
 import { useState } from 'react';
 import { decode } from "./lib/wld"
-import { createWalletClient, custom, createPublicClient, http } from "viem";
+import { createWalletClient, custom, createPublicClient, http, parseAbiItem } from "viem";
 import { optimismGoerli } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
-import { BigNumber } from '@ethersproject/bignumber';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
   const [proof, setproof] = useState<ISuccessResult | null>(null);
 
-  const contractAddress = "0x4251f93574d3f9CA3B1f82F5aD224d3490e4490C";
+  const contractAddress = "0x0B6DCf635578DFA52241D15fdD9Ed04Ca4425dc5";
 
   const submit = async () => {
     if (!address) {
@@ -22,12 +21,12 @@ export default function Home() {
     if (proof && address) {
       const walletClient = createWalletClient({
         chain: optimismGoerli,
-        transport: custom((window as any).ethereum)
+        transport: custom((window as any).ethereum),
       })
 
       const publicClient = createPublicClient({
         chain: optimismGoerli,
-        transport: http(),
+        transport: http(`https://opt-goerli.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
       })
 
       const merkleRoot = decode<bigint>('uint256', proof.merkle_root);
@@ -54,6 +53,11 @@ export default function Home() {
       })
       const hash = await walletClient.writeContract(request)
       console.log(hash)
+      const unwatch = publicClient.watchEvent({
+        address: contractAddress,
+        event: parseAbiItem(`event VerifiedAndExecuted(address indexed signal,uint256 indexed root,uint256 indexed nullifierHash,uint256[8] proof)`),
+        onLogs: logs => console.log(logs)
+      })
     }
   }
 
