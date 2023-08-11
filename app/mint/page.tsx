@@ -58,7 +58,7 @@ export default function Mint() {
       address: SBTContractAddress,
       abi: SBTAbi,
       functionName: "mintNFT",
-      args: [address, "http://google.co.jp"],
+      args: [address, jsonIpfsHash],
       account: address,
     })
     const hash = await walletClient.writeContract(request)
