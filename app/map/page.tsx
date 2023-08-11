@@ -11,7 +11,7 @@ export default function Map() {
 
   const customIcon = new L.icon({
     iconUrl: 'https://gateway.pinata.cloud/ipfs/QmNYHCzsPVNF3goN7u6yM2kMeVAZhnCc3a1Htx6wHSUtaJ',
-    iconSize: [38, 95], // アイコンのサイズを設定
+    iconSize: [100, 100], // アイコンのサイズを設定
     iconAnchor: [22, 94], // アイコンのアンカーポイントを設定
     popupAnchor: [-3, -76] // ポップアップが表示されるポイントを設定
   })
