@@ -11,7 +11,7 @@ import { ContractAbi } from "./abi/Contract.abi";
 export default function Home() {
   const { address, isConnected } = useAccount();
   const [proof, setproof] = useState<ISuccessResult | null>(null);
-
+  const [nullifierHash, setnullifierHash] = useState<string | null>(null);
   const contractAddress = "0x0B6DCf635578DFA52241D15fdD9Ed04Ca4425dc5";
 
   const submit = async () => {
@@ -30,7 +30,7 @@ export default function Home() {
       })
 
       const merkleRoot = decode<bigint>('uint256', proof.merkle_root);
-      const nullifierHash = decode<bigint>('uint256', proof.nullifier_hash);
+      const _nullifierHash = decode<bigint>('uint256', proof.nullifier_hash);
       const _proof = decode<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]>(
         'uint256[8]',
         proof.proof
@@ -48,16 +48,20 @@ export default function Home() {
         address: contractAddress,
         abi: ContractAbi,
         functionName: "verifyAndExecute",
-        args: [address, merkleRoot, nullifierHash, _proof],
+        args: [address, merkleRoot, _nullifierHash, _proof],
         account: address,
       })
       const hash = await walletClient.writeContract(request)
       console.log(hash)
-      const unwatch = publicClient.watchEvent({
-        address: contractAddress,
-        event: parseAbiItem(`event VerifiedAndExecuted(address indexed signal,uint256 indexed root,uint256 indexed nullifierHash,uint256[8] proof)`),
-        onLogs: logs => console.log(logs)
-      })
+
+      const transaction = await publicClient.waitForTransactionReceipt({
+        hash
+      });
+      console.log(transaction)
+
+      if (transaction.status === "success") {
+        setnullifierHash(proof.nullifier_hash);
+      }
     }
   }
 
@@ -74,6 +78,7 @@ export default function Home() {
       <button onClick={submit}>submit</button>
       <button onClick={handleConnect}>connect</button>
     </div>}
+      {nullifierHash && nullifierHash}
       <IDKitWidget
         app_id='app_staging_e1b76c940110a7556717585809b51fb1'
         action="test"
