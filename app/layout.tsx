@@ -2,6 +2,7 @@
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { optimismGoerli } from "wagmi/chains";
 import { publicProvider } from 'wagmi/providers/public';
+// import 'leaflet/dist/leaflet.css';
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [optimismGoerli],
