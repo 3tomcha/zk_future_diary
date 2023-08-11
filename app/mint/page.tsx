@@ -5,9 +5,13 @@ import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import useClient from "../hooks/useClient";
 import { useSearchParams } from 'next/navigation'
+import { useState } from "react";
 
 export default function Mint() {
   const { address } = useAccount();
+  const [imageIpfsHash, setImageIpfsHash] = useState("");
+  const [jsonIpfsHash, setJsonIpfsHash] = useState("");
+
   const searchParams = useSearchParams()
   console.log(searchParams.get("nullifier_hash"))
   const nullifierHash = searchParams.get("nullifier_hash")
@@ -20,6 +24,18 @@ export default function Mint() {
   const handlePinImage = async () => {
     const res = await fetch(`/api/pin/image?file_name=${nullifierHash}`)
     console.log(res)
+    if (res.ok) {
+      const _imageIpfsHash = await res.text();
+      setImageIpfsHash(_imageIpfsHash);
+    }
+  }
+  const handlePinJSON = async () => {
+    const res = await fetch(`/api/pin/json?image_ipfs_hash=${imageIpfsHash}`)
+    console.log(res)
+    if (res.ok) {
+      const _jsonIpfsHash = await res.text();
+      setJsonIpfsHash(_jsonIpfsHash);
+    }
   }
 
   const { connect } = useConnect({
@@ -55,6 +71,7 @@ export default function Mint() {
       <button onClick={handleConnect}>Connect</button>
       <button onClick={handleGenerate}>Generate</button>
       <button onClick={handlePinImage}>PinImage</button>
+      <button onClick={handlePinJSON}>PinJSON</button>
     </>
   )
 }
