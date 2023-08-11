@@ -6,6 +6,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import useClient from "../hooks/useClient";
 import { useSearchParams } from 'next/navigation'
 import { useState } from "react";
+import useLocation from "../hooks/useLocation";
 
 export default function Mint() {
   const { address } = useAccount();
@@ -13,6 +14,7 @@ export default function Mint() {
   const [jsonIpfsHash, setJsonIpfsHash] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const { getLocation } = useLocation();
 
   const searchParams = useSearchParams()
   console.log(searchParams.get("nullifier_hash"))
@@ -65,16 +67,17 @@ export default function Mint() {
     if (!address) {
       await connect();
     }
-
-    const { request } = await publicClient.simulateContract({
-      address: SBTContractAddress,
-      abi: SBTAbi,
-      functionName: "mintNFT",
-      args: [address, jsonIpfsHash],
-      account: address,
-    })
-    const hash = await walletClient.writeContract(request)
-    console.log(hash)
+    if (address) {
+      const { request } = await publicClient.simulateContract({
+        address: SBTContractAddress,
+        abi: SBTAbi,
+        functionName: "mintNFT",
+        args: [address, jsonIpfsHash],
+        account: address,
+      })
+      const hash = await walletClient?.writeContract(request)
+      console.log(hash)
+    }
   }
 
   return (
@@ -85,6 +88,7 @@ export default function Mint() {
       <button onClick={handlePinImage}>PinImage</button>
       <button onClick={handlePosition}>handlePosition</button>
       <button onClick={handlePinJSON}>PinJSON</button>
+      <button onClick={getLocation}>getLocation</button>
     </>
   )
 }

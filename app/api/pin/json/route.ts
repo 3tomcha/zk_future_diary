@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       cidVersion: 0
     }
   };
-  const res = await pinata.pinJSONToIPFS(body, options)
+  const res = await pinata.pinJSONToIPFS(body, options as any)
   console.log(res)
   return new Response(res.IpfsHash, {
     status: 200,

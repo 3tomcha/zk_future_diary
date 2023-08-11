@@ -7,6 +7,7 @@ import { decode } from "./lib/wld"
 import { createWalletClient, custom, createPublicClient, http, parseAbiItem } from "viem";
 import { optimismGoerli } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
+import { targetChain } from './const/contract';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
@@ -19,10 +20,12 @@ export default function Home() {
       await connect();
     }
     if (proof && address) {
-      const walletClient = createWalletClient({
-        chain: optimismGoerli,
-        transport: custom((window as any).ethereum),
-      })
+      const walletClient = typeof window !== "undefined"
+        ? createWalletClient({
+          chain: targetChain,
+          transport: custom((window as any).ethereum),
+        })
+        : null;
 
       const publicClient = createPublicClient({
         chain: optimismGoerli,
@@ -51,9 +54,11 @@ export default function Home() {
         args: [address, merkleRoot, _nullifierHash, _proof],
         account: address,
       })
-      const hash = await walletClient.writeContract(request)
+      const hash = await walletClient?.writeContract(request)
       console.log(hash)
-
+      if (!hash) {
+        return
+      }
       const transaction = await publicClient.waitForTransactionReceipt({
         hash
       });

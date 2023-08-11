@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       cidVersion: 0
     }
   };
-  const res = await pinata.pinFromFS(sourcePath, options)
+  const res = await pinata.pinFromFS(sourcePath, options as any)
   console.log(res)
   return new Response(res.IpfsHash, {
     status: 200,

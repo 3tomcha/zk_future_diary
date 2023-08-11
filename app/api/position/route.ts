@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const normalizedLat = (Number(hashNumber % BigInt(1000000)) / 1000000);
   const normalizedLon = (Number((hashNumber / BigInt(1000000)) % BigInt(1000000)) / 1000000);
 
-  const mapValue = (value, start1, stop1, start2, stop2) => {
+  const mapValue = (value: number, start1: number, stop1: number, start2: number, stop2: number) => {
     return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
   };
 
