@@ -46,14 +46,20 @@ export async function GET() {
 
   const responseJSON = (await response.json()) as GenerationResponse
 
-  responseJSON.artifacts.forEach((image, index) => {
-    fs.writeFileSync(
-      `/out/v1_txt2img_${index}.png`,
-      Buffer.from(image.base64, 'base64')
-    )
-  })
+  const image = responseJSON.artifacts[0];
+  const fileName = `./out/v1_txt2img_0.png`;
 
-  return new Response(`responseJSON`, {
+  const dir = './out';
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  fs.writeFileSync(
+    fileName,
+    Buffer.from(image.base64, 'base64')
+  )
+
+  return new Response("succeeded", {
     status: 200,
   })
 }
