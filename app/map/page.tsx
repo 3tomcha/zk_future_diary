@@ -40,6 +40,11 @@ export default function Map() {
       console.log(json1)
       const image1 = json1?.image?.split("ipfs://")[1]
       console.log(image1)
+      const latitude = json1?.attribute?.latitude;
+      const longitude = json1?.attribute?.longitude;
+      console.log(image1)
+      console.log(latitude)
+      console.log(longitude)
     }
   }
 
