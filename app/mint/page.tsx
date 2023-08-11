@@ -10,6 +10,13 @@ export default function Mint() {
   const { address } = useAccount();
   const searchParams = useSearchParams()
   console.log(searchParams.get("nullifier_hash"))
+  const nullifierHash = searchParams.get("nullifier_hash")
+  const outImagePath = `./out/${nullifierHash}.png`
+
+  const handleGenerate = async () => {
+    const res = await fetch(`/api/generate?prompt=${nullifierHash}`)
+    console.log(res)
+  }
 
   const { connect } = useConnect({
     connector: new InjectedConnector
@@ -42,6 +49,7 @@ export default function Mint() {
     <>
       <button onClick={mint}>Mint</button>
       <button onClick={handleConnect}>Connect</button>
+      <button onClick={handleGenerate}>Generate</button>
     </>
   )
 }
