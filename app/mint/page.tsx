@@ -4,7 +4,7 @@ import { SBTAbi } from "../abi/SBT.abi";
 import { useAccount, useConnect } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import useClient from "../hooks/useClient";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from "react";
 import useLocation from "../hooks/useLocation";
 
@@ -20,6 +20,7 @@ export default function Mint() {
   console.log(searchParams.get("nullifier_hash"))
   const nullifierHash = searchParams.get("nullifier_hash")
   const outImagePath = `./out/${nullifierHash}.png`
+  const router = useRouter();
 
   const handleGenerate = async () => {
     const res = await fetch(`/api/generate?prompt=${nullifierHash}`)
@@ -80,15 +81,25 @@ export default function Mint() {
     }
   }
 
+  const goMyPage = () => {
+    router.push("/mypage");
+  }
+
+  const goMap = async () => {
+    router.push("/map");
+  }
+
   return (
     <>
-      <button onClick={mint}>Mint</button>
       <button onClick={handleConnect}>Connect</button>
       <button onClick={handleGenerate}>Generate</button>
       <button onClick={handlePinImage}>PinImage</button>
       <button onClick={handlePosition}>handlePosition</button>
       <button onClick={handlePinJSON}>PinJSON</button>
       <button onClick={getLocation}>getLocation</button>
+      <button onClick={mint}>Mint</button>
+      <button onClick={goMyPage}>goMyPage</button>
+      <button onClick={goMap}>goMap</button>
     </>
   )
 }
