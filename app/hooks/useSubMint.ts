@@ -52,8 +52,12 @@ export default function useSubMint() {
 
 
   const subMint = (userLocation: Location, targetLocation: Location) => {
+    console.log("subMint clicked")
+    console.log(userLocation);
+    console.log(targetLocation);
+
     if (isWithin10Km(userLocation.latitude, userLocation.longitude, targetLocation.latitude, targetLocation.longitude))
-      console.log("subMint")
+      console.log("subMint works")
   }
 
   return {

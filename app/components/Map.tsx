@@ -10,6 +10,7 @@ import { SBTContractAddress } from "../const/contract";
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import useLocation from '../hooks/useLocation';
+import useSubMint from '../hooks/useSubMint';
 
 type NFTs = {
   image: string,
@@ -36,11 +37,17 @@ const userIcon = new L.Icon({
   popupAnchor: [0, -32]
 });
 
+type Location = {
+  latitude: number;
+  longitude: number;
+};
+
 export default function Map(props: { address: string }) {
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
   const { address } = useAccount();
   const { getLocation, userLatitude, userLongitude } = useLocation();
+  const { subMint } = useSubMint();
 
   useEffect(() => {
     const fetchNFTData = async () => {
@@ -50,6 +57,11 @@ export default function Map(props: { address: string }) {
 
     fetchNFTData();
   }, []);
+
+  const handleSubMint = (userLocation: Location, targetLocation: Location) => {
+    console.log("handleSubMint")
+    subMint(userLocation, targetLocation)
+  }
 
 
   const setTokenOwner = async () => {
@@ -144,7 +156,14 @@ export default function Map(props: { address: string }) {
         )}
         {
           userLatitude &&
-          <Marker position={[userLatitude, userLongitude]} icon={userIcon} />
+          <button onClick={handleSubMint}>
+            <Marker position={[userLatitude, userLongitude]} icon={userIcon} eventHandlers={{
+              click: (e) => {
+                console.log('marker clicked', e)
+                handleSubMint({ latitude: userLatitude, longitude: userLongitude }, { latitude: userLatitude, longitude: userLongitude })
+              },
+            }} />
+          </button>
         }
       </MapContainer>
     </div>
