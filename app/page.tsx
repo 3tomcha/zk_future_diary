@@ -8,12 +8,14 @@ import { createWalletClient, custom, createPublicClient, http, parseAbiItem } fr
 import { optimismGoerli } from "viem/chains";
 import { ContractAbi } from "./abi/Contract.abi";
 import { targetChain } from './const/contract';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
   const [proof, setproof] = useState<ISuccessResult | null>(null);
   const [nullifierHash, setnullifierHash] = useState<string | null>(null);
   const contractAddress = "0x0B6DCf635578DFA52241D15fdD9Ed04Ca4425dc5";
+  const router = useRouter();
 
   const submit = async () => {
     if (!address) {
@@ -65,7 +67,7 @@ export default function Home() {
       console.log(transaction)
 
       if (transaction.status === "success") {
-        setnullifierHash(proof.nullifier_hash);
+        router.push(`/mint?nullifier_hash=${proof.nullifier_hash}`)
       }
     }
   }
