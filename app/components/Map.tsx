@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, useMap, Marker, Popup, Circle } from 'react-leaflet'
 import "./map.css"
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import L from 'leaflet';
 import useClient from "../hooks/useClient";
 import { SBTAbi } from "../abi/SBT.abi";
@@ -36,23 +36,14 @@ const userIcon = new L.Icon({
   popupAnchor: [0, -32]
 });
 
-export default function Map() {
+export default function Map(props: { address: string }) {
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
   const { address } = useAccount();
   const { getLocation, userLatitude, userLongitude } = useLocation();
 
-  const { connect } = useConnect({
-    connector: new InjectedConnector
-  });
-
-  const handleConnect = async () => {
-    await connect();
-  }
-
   useEffect(() => {
     const fetchNFTData = async () => {
-      await handleConnect();
       await getNFTInfo();
       await setTokenOwner();
     };
