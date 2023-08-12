@@ -7,19 +7,24 @@ import L from 'leaflet';
 import useClient from "../hooks/useClient";
 import { SBTAbi } from "../abi/SBT.abi";
 import { SBTContractAddress } from "../const/contract";
+import { useAccount, useConnect } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
 
 type NFTs = {
   image: string,
   latitude: number,
   longitude: number,
+  tokenId: number,
+  isOwner?: boolean
 }[]
 
-const createCustomIcon = (hash: string) => {
+const createCustomIcon = (hash: string, isOwner: boolean) => {
   return new L.Icon({
     iconUrl: `https://gateway.pinata.cloud/ipfs/${hash}`,
-    iconSize: [100, 100],
+    iconSize: isOwner ? [120, 120] : [100, 100],
     iconAnchor: [22, 94],
-    popupAnchor: [-3, -76]
+    popupAnchor: [-3, -76],
+    className: isOwner ? 'owner-icon' : 'icon'
   });
 }
 
@@ -28,10 +33,49 @@ export default function Map() {
   const [longitude, setLongitude] = useState(0);
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
+  const { address } = useAccount();
+
+  const { connect } = useConnect({
+    connector: new InjectedConnector
+  });
+
+  const handleConnect = async () => {
+    await connect();
+  }
 
   useEffect(() => {
-    getNFTInfo();
-  });
+    const fetchNFTData = async () => {
+      await handleConnect();
+      await getNFTInfo();
+      await setTokenOwner();
+    };
+
+    fetchNFTData();
+  }, []);
+
+
+  const setTokenOwner = async () => {
+    console.log("setTokenOwner")
+    console.log(nfts)
+    console.log(address)
+    if (!nfts) return;
+
+    const promises = nfts.map(async (nft) => {
+      const owner = await publicClient.readContract({
+        address: SBTContractAddress,
+        abi: SBTAbi,
+        functionName: "ownerOf",
+        args: [BigInt(nft.tokenId)],
+      });
+      console.log(owner)
+      return { ...nft, isOwner: owner === address };
+    });
+
+    const newNFTs = await Promise.all(promises);
+    setNFTs(newNFTs);
+    console.log(newNFTs)
+    console.log(nfts)
+  }
 
   const getNFTInfo = async () => {
     const currentTokenId = await publicClient.readContract({
@@ -64,7 +108,8 @@ export default function Map() {
         nfts.push({
           image: image1,
           latitude: latitude,
-          longitude: longitude
+          longitude: longitude,
+          tokenId: index
         })
       }
     }
@@ -79,7 +124,7 @@ export default function Map() {
           url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
         />
         {nfts?.map(nft => {
-          const icon = createCustomIcon(nft.image)
+          const icon = createCustomIcon(nft.image, Boolean(nft.isOwner))
           return (
             <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={nft.latitude}>
               <Popup>
