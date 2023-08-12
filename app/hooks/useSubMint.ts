@@ -2,6 +2,13 @@ type Location = {
   latitude: number;
   longitude: number;
 };
+type NFTs = {
+  image: string,
+  latitude: number,
+  longitude: number,
+  tokenId: number,
+  isOwner?: boolean
+}[]
 
 export default function useSubMint() {
   const R = 6371; // 地球の半径 (キロメートル)
@@ -51,13 +58,15 @@ export default function useSubMint() {
 
 
 
-  const subMint = (userLocation: Location, targetLocation: Location) => {
+  const subMint = (userLocation: Location, myNFTs: NFTs) => {
     console.log("subMint clicked")
     console.log(userLocation);
-    console.log(targetLocation);
+    console.log(myNFTs)
 
-    if (isWithin10Km(userLocation.latitude, userLocation.longitude, targetLocation.latitude, targetLocation.longitude))
-      console.log("subMint works")
+    myNFTs.map((nft) => {
+      if (isWithin10Km(userLocation.latitude, userLocation.longitude, nft.latitude, nft.longitude))
+        console.log("subMint works")
+    })
   }
 
   return {

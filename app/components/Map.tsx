@@ -58,11 +58,14 @@ export default function Map(props: { address: string }) {
     fetchNFTData();
   }, []);
 
-  const handleSubMint = (userLocation: Location, targetLocation: Location) => {
+  const handleSubMint = (userLocation: Location) => {
     console.log("handleSubMint")
-    subMint(userLocation, targetLocation)
+    if (myNFTs) {
+      subMint(userLocation, myNFTs)
+    }
   }
 
+  const myNFTs = nfts?.filter((nft) => nft.isOwner);
 
   const setTokenOwner = async () => {
     console.log("setTokenOwner")
@@ -160,7 +163,7 @@ export default function Map(props: { address: string }) {
             <Marker position={[userLatitude, userLongitude]} icon={userIcon} eventHandlers={{
               click: (e) => {
                 console.log('marker clicked', e)
-                handleSubMint({ latitude: userLatitude, longitude: userLongitude }, { latitude: userLatitude, longitude: userLongitude })
+                handleSubMint({ latitude: userLatitude, longitude: userLongitude })
               },
             }} />
           </button>
