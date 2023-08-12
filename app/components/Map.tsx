@@ -9,6 +9,7 @@ import { SBTAbi } from "../abi/SBT.abi";
 import { SBTContractAddress } from "../const/contract";
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import useLocation from '../hooks/useLocation';
 
 type NFTs = {
   image: string,
@@ -34,6 +35,7 @@ export default function Map() {
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
   const { address } = useAccount();
+  const { getLocation } = useLocation();
 
   const { connect } = useConnect({
     connector: new InjectedConnector
@@ -118,6 +120,7 @@ export default function Map() {
 
   return (
     <div className="map">
+      <button onClick={getLocation}>getLocation</button>
       <MapContainer center={[35.6895, 139.6917]} zoom={13}>
         <TileLayer
           attribution='&copy; <a href="https://basemaps.cartocdn.com/copyright">Basemaps</a> contributors'
