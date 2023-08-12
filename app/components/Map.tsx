@@ -152,8 +152,8 @@ export default function Map(props: { address: string }) {
                 center={[nft.latitude, nft.longitude]}
                 radius={10000} // 半径を10km（10000m）として設定
                 fillOpacity={0.5}
-                color="gold"
-                fillColor="gold"
+                color="#C0C0C0"
+                fillColor="#C0C0C0"
                 key={`${nft.tokenId}_circle`}
               />
             </Fragment>
