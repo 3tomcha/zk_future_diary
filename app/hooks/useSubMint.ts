@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 type Location = {
   latitude: number;
   longitude: number;
@@ -11,6 +12,8 @@ type NFTs = {
 }[]
 
 export default function useSubMint() {
+  const router = useRouter();
+  console.log(router)
   const R = 6371; // 地球の半径 (キロメートル)
 
   /**
@@ -64,8 +67,11 @@ export default function useSubMint() {
     console.log(myNFTs)
 
     myNFTs.map((nft) => {
-      if (isWithin10Km(userLocation.latitude, userLocation.longitude, nft.latitude, nft.longitude))
+      if (isWithin10Km(userLocation.latitude, userLocation.longitude, nft.latitude, nft.longitude)) {
         console.log("subMint works")
+        const nullifierHash = localStorage.getItem("nullifierHash")
+        router.push(`/mint?nullifier_hash=${nullifierHash}`)
+      }
     })
   }
 

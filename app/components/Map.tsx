@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, useMap, Marker, Popup, Circle } from 'react-leaflet'
 import "./map.css"
 import 'leaflet/dist/leaflet.css';
-import { use, useEffect, useState } from 'react';
+import { Fragment, use, useEffect, useState } from 'react';
 import L from 'leaflet';
 import useClient from "../hooks/useClient";
 import { SBTAbi } from "../abi/SBT.abi";
@@ -51,8 +51,8 @@ export default function Map(props: { address: string }) {
 
   useEffect(() => {
     const fetchNFTData = async () => {
-      await getNFTInfo();
-      await setTokenOwner();
+      const _nfts = await getNFTInfo();
+      await setTokenOwner(_nfts);
     };
 
     fetchNFTData();
@@ -67,13 +67,12 @@ export default function Map(props: { address: string }) {
 
   const myNFTs = nfts?.filter((nft) => nft.isOwner);
 
-  const setTokenOwner = async () => {
+  const setTokenOwner = async (_nfts: NFTs) => {
     console.log("setTokenOwner")
-    console.log(nfts)
+    console.log(_nfts)
     console.log(address)
-    if (!nfts) return;
 
-    const promises = nfts.map(async (nft) => {
+    const promises = _nfts.map(async (nft) => {
       const owner = await publicClient.readContract({
         address: SBTContractAddress,
         abi: SBTAbi,
@@ -96,7 +95,7 @@ export default function Map(props: { address: string }) {
       abi: SBTAbi,
       functionName: "currentTokenId",
     })
-    const nfts = [];
+    const _nfts = [];
     for (let index = 3; index <= Number(currentTokenId); index++) {
       const res = await publicClient.readContract({
         address: SBTContractAddress,
@@ -118,7 +117,7 @@ export default function Map(props: { address: string }) {
       console.log(latitude)
       console.log(longitude)
       if (latitude && longitude) {
-        nfts.push({
+        _nfts.push({
           image: image1,
           latitude: latitude,
           longitude: longitude,
@@ -126,7 +125,10 @@ export default function Map(props: { address: string }) {
         })
       }
     }
-    setNFTs(nfts)
+    console.log(_nfts)
+    setNFTs(_nfts)
+    console.log("setNFTs")
+    return _nfts
   }
 
   return (
@@ -140,8 +142,8 @@ export default function Map(props: { address: string }) {
         {nfts?.map(nft => {
           const icon = createCustomIcon(nft.image, Boolean(nft.isOwner))
           return (
-            <>
-              <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={nft.latitude}>
+            <Fragment key={nft.tokenId}>
+              <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={`${nft.tokenId}_marker`}>
                 <Popup>
                   A pretty CSS3 popup. <br /> Easily customizable.
                 </Popup>
@@ -152,21 +154,20 @@ export default function Map(props: { address: string }) {
                 fillOpacity={0.5}
                 color="gold"
                 fillColor="gold"
+                key={`${nft.tokenId}_circle`}
               />
-            </>
+            </Fragment>
           )
         }
         )}
         {
           userLatitude &&
-          <button onClick={handleSubMint}>
-            <Marker position={[userLatitude, userLongitude]} icon={userIcon} eventHandlers={{
-              click: (e) => {
-                console.log('marker clicked', e)
-                handleSubMint({ latitude: userLatitude, longitude: userLongitude })
-              },
-            }} />
-          </button>
+          <Marker position={[userLatitude, userLongitude]} icon={userIcon} eventHandlers={{
+            click: (e) => {
+              console.log('marker clicked', e)
+              handleSubMint({ latitude: userLatitude, longitude: userLongitude })
+            },
+          }} />
         }
       </MapContainer>
     </div>

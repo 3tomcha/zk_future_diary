@@ -19,6 +19,7 @@ export default function Mint() {
   const searchParams = useSearchParams()
   console.log(searchParams.get("nullifier_hash"))
   const nullifierHash = searchParams.get("nullifier_hash")
+  localStorage.setItem("nullifierHash", String(nullifierHash))
   const outImagePath = `./out/${nullifierHash}.png`
   const router = useRouter();
 
