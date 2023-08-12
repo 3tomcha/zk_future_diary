@@ -2,7 +2,7 @@
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import "./map.css"
 import 'leaflet/dist/leaflet.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import L from 'leaflet';
 import useClient from "../hooks/useClient";
 import { SBTAbi } from "../abi/SBT.abi";
@@ -29,6 +29,9 @@ export default function Map() {
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
 
+  useEffect(() => {
+    getNFTInfo();
+  });
 
   const getNFTInfo = async () => {
     const currentTokenId = await publicClient.readContract({
@@ -70,8 +73,7 @@ export default function Map() {
 
   return (
     <div className="map">
-      <button onClick={getNFTInfo}>getNFTInfo</button>
-      <MapContainer center={[35.6895, 139.6917]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer center={[35.6895, 139.6917]} zoom={13}>
         <TileLayer
           attribution='&copy; <a href="https://basemaps.cartocdn.com/copyright">Basemaps</a> contributors'
           url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
