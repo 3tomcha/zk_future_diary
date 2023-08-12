@@ -29,13 +29,18 @@ const createCustomIcon = (hash: string, isOwner: boolean) => {
   });
 }
 
+const userIcon = new L.Icon({
+  iconUrl: '/person-icon.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32]
+});
+
 export default function Map() {
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
   const { publicClient } = useClient();
   const [nfts, setNFTs] = useState<NFTs>();
   const { address } = useAccount();
-  const { getLocation } = useLocation();
+  const { getLocation, userLatitude, userLongitude } = useLocation();
 
   const { connect } = useConnect({
     connector: new InjectedConnector
@@ -146,6 +151,10 @@ export default function Map() {
           )
         }
         )}
+        {
+          userLatitude &&
+          <Marker position={[userLatitude, userLongitude]} icon={userIcon} />
+        }
       </MapContainer>
     </div>
   )

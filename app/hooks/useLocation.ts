@@ -1,4 +1,9 @@
+import { useState } from "react"
+
 export default function useLocation() {
+  const [userLatitude, setUserLatitude] = useState(0)
+  const [userLongitude, setUserLongitude] = useState(0)
+
   const getLocation = () => {
     console.log("getLocation")
     if (navigator.geolocation) {
@@ -16,6 +21,8 @@ export default function useLocation() {
     console.log(position)
     alert("Latitude: " + position.coords.latitude +
       "\nLongitude: " + position.coords.longitude);
+    setUserLatitude(position.coords.latitude)
+    setUserLongitude(position.coords.longitude)
   }
 
   const showError = (error: GeolocationPositionError) => {
@@ -37,6 +44,8 @@ export default function useLocation() {
 
   return {
     getLocation,
-    showPosition
+    showPosition,
+    userLatitude,
+    userLongitude
   };
 }
