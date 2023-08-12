@@ -37,13 +37,14 @@ export default function Map() {
       functionName: "currentTokenId",
     })
     const nfts = [];
-    for (let index = 3; index <= currentTokenId; index++) {
+    for (let index = 3; index <= Number(currentTokenId); index++) {
       const res = await publicClient.readContract({
         address: SBTContractAddress,
         abi: SBTAbi,
         functionName: "tokenURI",
         args: [BigInt(index)],
       })
+      console.log(index)
       console.log(res)
       const res1 = await fetch(`https://gateway.pinata.cloud/ipfs/${res}`);
       console.log(res1)
@@ -67,27 +68,9 @@ export default function Map() {
     setNFTs(nfts)
   }
 
-  const setPosition = () => {
-    const hash = "0x5a10d152072832823c38e964E382CD22C00a8d7E";
-    const hashNumber = BigInt(hash);
-
-    // ハッシュ値を範囲 0-1 にマッピング
-    const normalizedLat = (Number(hashNumber % BigInt(1000000)) / 1000000);
-    const normalizedLon = (Number((hashNumber / BigInt(1000000)) % BigInt(1000000)) / 1000000);
-
-    const mapValue = (value: number, start1: number, stop1: number, start2: number, stop2: number) => {
-      return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
-    };
-
-    const _latitude = mapValue(normalizedLat, 0, 1, 35.525, 35.815);
-    const _longitude = mapValue(normalizedLon, 0, 1, 139.595, 139.925);
-    setLatitude(_latitude)
-    setLongitude(_longitude)
-  }
   return (
     <div className="map">
       <button onClick={getNFTInfo}>getNFTInfo</button>
-      <button onClick={setPosition}>setPosition</button>
       <MapContainer center={[35.6895, 139.6917]} zoom={13} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://basemaps.cartocdn.com/copyright">Basemaps</a> contributors'
