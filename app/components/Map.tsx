@@ -1,5 +1,5 @@
 "use client"
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, useMap, Marker, Popup, Circle } from 'react-leaflet'
 import "./map.css"
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useState } from 'react';
@@ -126,11 +126,20 @@ export default function Map() {
         {nfts?.map(nft => {
           const icon = createCustomIcon(nft.image, Boolean(nft.isOwner))
           return (
-            <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={nft.latitude}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
+            <>
+              <Marker position={[nft.latitude, nft.longitude]} icon={icon} key={nft.latitude}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+              <Circle
+                center={[nft.latitude, nft.longitude]}
+                radius={10000} // 半径を10km（10000m）として設定
+                fillOpacity={0.5}
+                color="gold"
+                fillColor="gold"
+              />
+            </>
           )
         }
         )}
