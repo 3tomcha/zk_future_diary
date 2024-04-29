@@ -4,11 +4,11 @@ type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { Add } from '../contracts/build/src/Add.js';
+import type { LocationOracle } from '../contracts/build/src/LocationOracle.js';
 
 const state = {
-  Add: null as null | typeof Add,
-  zkapp: null as null | Add,
+  LocationOracle: null as null | typeof LocationOracle,
+  zkapp: null as null | LocationOracle,
   transaction: null as null | Transaction,
 };
 
@@ -23,11 +23,11 @@ const functions = {
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
-    const { Add } = await import('../contracts/build/src/Add.js');
-    state.Add = Add;
+    const { LocationOracle } = await import('../contracts/build/src/LocationOracle.js');
+    state.LocationOracle = LocationOracle;
   },
   compileContract: async (args: {}) => {
-    await state.Add!.compile();
+    await state.LocationOracle!.compile();
   },
   fetchAccount: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
@@ -35,15 +35,15 @@ const functions = {
   },
   initZkappInstance: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
-    state.zkapp = new state.Add!(publicKey);
+    state.zkapp = new state.LocationOracle!(publicKey);
   },
-  getNum: async (args: {}) => {
-    const currentNum = await state.zkapp!.num.get();
-    return JSON.stringify(currentNum.toJSON());
-  },
+  // getNum: async (args: {}) => {
+  //   const currentNum = await state.zkapp!.num.get();
+  //   return JSON.stringify(currentNum.toJSON());
+  // },
   createUpdateTransaction: async (args: {}) => {
     const transaction = await Mina.transaction(async () => {
-      await state.zkapp!.update();
+      // await state.zkapp!.update();
     });
     state.transaction = transaction;
   },
