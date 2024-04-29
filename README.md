@@ -31,7 +31,7 @@ Auro Walletがインストールされていること
 未来日記を確かに達成できたことをXにシェアしましょう<br>
 ゼロ知識証明によって、確実に達成したことがわかるため、自慢できます！<br>
 ```
-今日私は、14:00にカフェに行くを達成しました<br>
+今日私は、14:00にカフェに行くを達成しました
 ゼロ知識証明によって確実に証明されました
 7mX2W8KgizCD8PjhMV2KpG1vw94S3NroAg5H3e3hu9JGVQsL4ZQFPixpfT6U1K2qamj3q1u1DXj1MzqHjB1oJ1uHuJ1LgGzf
 ```
