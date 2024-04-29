@@ -16,11 +16,7 @@ type Location = {
   lng: number;
 }
 
-function isTrue() {
-
-}
-
-function getSignedGeometry(userLocationLat: number, userLocationLng: Number, locations: Location[]) {
+function getSignedGeometry(userLocationLat: number, userLocationLng: number, locations: Location[]) {
   let privateKey =
     process.env.PRIVATE_KEY ??
     'EKF65JKw9Q1XWLDZyZNGysBbYG21QbJf3a4xnEoZPZ28LKYGMw53';
@@ -31,7 +27,7 @@ function getSignedGeometry(userLocationLat: number, userLocationLng: Number, loc
 
   // 全てのlocationの緯度と経度を一つの署名で扱う
   const signature = client.signFields(
-    [BigInt(isTrue)],
+    [BigInt(Math.ceil(userLocationLat * 10000)), BigInt(Math.ceil(userLocationLng * 10000)), BigInt(isTrue)],
     privateKey
   );
 
