@@ -1,23 +1,45 @@
-# Soul Bound Tokyo: "Fill the City with SBT!"
-## Contracts
-https://github.com/3tomcha/soul-bound-tokyo-contract<br>
-## App
-https://github.com/3tomcha/soul-bound-tokyo<br>
-## Url
-https://soul-bound-tokyo-9lyfoag1v-3tomcha.vercel.app/<br>
+# zk未来日記
+目標達成のために面倒なスケジュールを立てますか？<br>
+Non!それはもう必要ありません。<br>
+これからは、あなたは目標を入力するだけ。<br>
+AIが自動的にスケジュールを立ててくれるから、その通りに行動するだけで目標が達成できちゃいます。<br>
+それが「zk未来日記」です。さぁデザインされた未来へ飛び込もう！<br>
 
-## SBT Contract Address
-0x0eC078dC78278e70eBEC2056DCC7d030fA9701fB
+<img width="740" alt="スクリーンショット 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194">
 
-## Usage
-### Install
+## 推奨環境
+PC: Brave最新版<br>
 
-```shell
-$ pnpm install
-```
+## 動作前提
+Auro Walletがインストールされていること
 
-### Running app on your local
+## 使い方
+### ユーザー
+#### ①スケジュールを作る
+左の入力ボックスに、目標を入力して生成ボタンを押します。<br>
+#### ②スケジュールを見る
+生成されたスケジュールを見ることができます。<br>
+#### ③検証する
+現在の位置情報と写真を使って、未来日記を確かに達成したことを証明します。<br>
+ゼロ知識証明によって、プライバシーを守りながら検証できます。
+例）<br>
+スケジュールが「カフェに行く」の場合、下記の2点を検証<br>
+・現在の位置情報がカフェの位置情報一覧に含まれる<br>
+・写真がカフェであること<br>
+#### ④共有する
+未来日記を確かに達成できたことをXにシェアしましょう<br>
+ゼロ知識証明によって、確実に達成したことがわかるため、自慢できます！
 
-```shell
-$ pnpm run dev
-```
+
+### オプション
+#### A 画像生成
+スケジュールのランダムな1時間に対して画像を作ることができます。<br>
+
+# 技術情報
+### GoogleMapAPI
+位置情報の検証に使用
+### OpenAIAPI
+スケジュールの作成、投稿した画像に使用
+### StableDiffusionAPI
+スケジュールの画像の生成に使用
+
