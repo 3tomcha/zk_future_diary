@@ -11,34 +11,32 @@ const client = new Client({ network: 'testnet' });
   return this.toString();
 };
 
-function getSignedGeometry(locations: {
+type Location = {
   lat: number;
   lng: number;
-}[]) {
+}
+
+function isTrue() {
+
+}
+
+function getSignedGeometry(userLocationLat: number, userLocationLng: Number, locations: Location[]) {
   let privateKey =
     process.env.PRIVATE_KEY ??
     'EKF65JKw9Q1XWLDZyZNGysBbYG21QbJf3a4xnEoZPZ28LKYGMw53';
 
-  // 緯度と経度を1つの配列にまとめる
-  const flattenedLocations = locations.flatMap(location => [
-    BigInt(Math.ceil(location.lat * 10000000)),
-    BigInt(Math.ceil(location.lng * 10000000))
-  ]);
-
-  const _locations = locations.map(location => ({
-    lat: BigInt(Math.ceil(location.lat * 10000000)),
-    lng: BigInt(Math.ceil(location.lng * 10000000))
-  })
-  );
+  console.log(userLocationLat)
+  console.log(userLocationLng)
+  const isTrue = locations.some(l => l.lat == userLocationLat && l.lng == userLocationLng)
 
   // 全てのlocationの緯度と経度を一つの署名で扱う
   const signature = client.signFields(
-    flattenedLocations,
+    [BigInt(isTrue)],
     privateKey
   );
 
   return {
-    data: _locations,
+    data: isTrue,
     signature: signature.signature,
     publicKey: signature.publicKey
   }
@@ -57,9 +55,15 @@ async function getGoogleMapResponse() {
 }
 
 export async function GET(req: NextRequest) {
+  // クエリパラメータの取得
+  const url = req.nextUrl;
+  const lat = Number(url.searchParams.get('lat')) ?? 0;
+  const lng = Number(url.searchParams.get('lng')) ?? 0;
+
   const locations = await getGoogleMapResponse()
+  console.log(locations)
   return NextResponse.json(
-    getSignedGeometry(locations),
+    getSignedGeometry(lat, lng, locations),
     { status: 200 }
   );
 }
