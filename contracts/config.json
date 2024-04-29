@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "deployAliases": {
+    "berkeley": {
+      "networkId": "testnet",
+      "url": "https://proxy.berkeley.minaexplorer.com/graphql",
+      "keyPath": "keys/berkeley.json",
+      "feepayerKeyPath": "/Users/kobayashitomoya/.cache/zkapp-cli/keys/testing-feepayer.json",
+      "feepayerAlias": "testing-feepayer",
+      "fee": "0.1",
+      "smartContract": "LocationOracle"
+    },
+    "berkeley2": {
+      "networkId": "testnet",
+      "url": "https://proxy.berkeley.minaexplorer.com/graphql",
+      "keyPath": "keys/berkeley2.json",
+      "feepayerKeyPath": "/Users/kobayashitomoya/.cache/zkapp-cli/keys/local.json",
+      "feepayerAlias": "local",
+      "fee": "0.1",
+      "smartContract": "LocationOracle"
+    },
+    "local": {
+      "networkId": "testnet",
+      "url": "http://localhost:8080/graphql",
+      "keyPath": "keys/local.json",
+      "feepayerKeyPath": "/Users/kobayashitomoya/.cache/zkapp-cli/keys/local.json",
+      "feepayerAlias": "local",
+      "fee": "0.1",
+      "smartContract": "LocationOracle"
+    },
+    "local2": {
+      "networkId": "testnet",
+      "url": "http://localhost:8080/graphql",
+      "keyPath": "keys/local2.json",
+      "feepayerKeyPath": "/Users/kobayashitomoya/.cache/zkapp-cli/keys/local.json",
+      "feepayerAlias": "local",
+      "fee": "0.1",
+      "smartContract": "LocationOracle"
+    }
+  }
+}
