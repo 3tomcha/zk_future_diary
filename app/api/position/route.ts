@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fetch from 'node-fetch'
-// import pinataSDK from "@pinata/sdk";
+
 // @ts-ignore
 import Client from 'mina-signer';
 import { GoogleMapsResponse, PlaceResult } from '../../types/googlemap';
@@ -19,10 +19,23 @@ function getSignedGeometry(locations: {
     process.env.PRIVATE_KEY ??
     'EKF65JKw9Q1XWLDZyZNGysBbYG21QbJf3a4xnEoZPZ28LKYGMw53';
 
+  // 緯度と経度を1つの配列にまとめる
+  const flattenedLocations = locations.flatMap(location => [
+    BigInt(Math.ceil(location.lat * 10000000)),
+    BigInt(Math.ceil(location.lng * 10000000))
+  ]);
+
+  // 全てのlocationの緯度と経度を一つの署名で扱う
   const signature = client.signFields(
-    [locations],
+    flattenedLocations,
     privateKey
-  )
+  );
+
+  return {
+    data: locations,
+    signature: signature.signature,
+    publicKey: signature.publicKey
+  }
 }
 
 async function getGoogleMapResponse() {
