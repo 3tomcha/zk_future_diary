@@ -25,6 +25,12 @@ function getSignedGeometry(locations: {
     BigInt(Math.ceil(location.lng * 10000000))
   ]);
 
+  const _locations = locations.map(location => ({
+    lat: BigInt(Math.ceil(location.lat * 10000000)),
+    lng: BigInt(Math.ceil(location.lng * 10000000))
+  })
+  );
+
   // 全てのlocationの緯度と経度を一つの署名で扱う
   const signature = client.signFields(
     flattenedLocations,
@@ -32,7 +38,7 @@ function getSignedGeometry(locations: {
   );
 
   return {
-    data: locations,
+    data: _locations,
     signature: signature.signature,
     publicKey: signature.publicKey
   }
