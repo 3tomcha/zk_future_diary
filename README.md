@@ -1,23 +1,49 @@
-# Soul Bound Tokyo: "Fill the City with SBT!"
-## Contracts
-https://github.com/3tomcha/soul-bound-tokyo-contract<br>
-## App
-https://github.com/3tomcha/soul-bound-tokyo<br>
-## Url
-https://soul-bound-tokyo-9lyfoag1v-3tomcha.vercel.app/<br>
+# zk未来日記
+目標達成のために面倒なスケジュールを立てますか？<br>
+Non!それはもう必要ありません。<br>
+これからは、あなたは目標を入力するだけ。<br>
+AIが自動的にスケジュールを立ててくれるから、その通りに行動するだけで目標が達成できちゃいます。<br>
+それが「未来日記」です。さぁデザインされた未来へ飛び込もう！<br>
 
-## SBT Contract Address
-0x0eC078dC78278e70eBEC2056DCC7d030fA9701fB
+<img width="740" alt="スクリーンショット 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194">
 
-## Usage
-### Install
+## 推奨環境
+PC: Brave最新版<br>
+SP: Metamaskブラウザ最新版<br>
 
-```shell
-$ pnpm install
-```
+## 動作前提
+Auro Walletがインストールされていること
 
-### Running app on your local
+## 使い方
+<img width="789" alt="スクリーンショット 2023-06-20 9 54 24" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/8ce550be-765c-40cb-bbb7-77bd014193fe"><br>
+<img width="767" alt="スクリーンショット 2023-06-20 18 22 04" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/29c62c1f-4c92-4dbd-b865-c47201c5d244">
 
-```shell
-$ pnpm run dev
-```
+
+
+### ユーザー
+#### ①スケジュールを作る
+左の入力ボックスに、目標を入力して生成ボタンを押します。<br>
+#### ②スケジュールを見る
+生成されたスケジュールを見ることができます。<br>
+#### ③検証する
+ユーザーの現在の位置情報と写真を使ってゼロ知識証明で検証します
+例）
+スケジュールが「カフェに行く」の場合、
+現在の位置情報がカフェの位置情報一覧に含まれること
+写真がカフェであることを検証
+
+#### ⑦自慢する
+GOALTokenはいっぱい目標達成できた証！みんなに自慢しよう！
+<br>
+
+
+### オプション
+#### A 画像生成
+スケジュールのランダムな1時間に対して画像を作ることができます。<br>
+
+# 技術情報
+・GoogleMapAPI
+位置情報の検証に使用
+・openAI API
+
+
