@@ -5,7 +5,8 @@ AI will automatically create a schedule for you, and all you have to do is follo
 Zero-knowledge proofs ensure your privacy while reliably proving goal achievement.<br>
 This is "zkFutureDiary." Let's dive into the future you've designed!<br>
 
-<img width="740" alt="Screenshot 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194">
+<img width="740" alt="Screenshot 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194"><br>
+
 ## Recommended Environment
 PC: Latest version of Brave<br>
 
