@@ -40,6 +40,9 @@ dependencies:
   leaflet:
     specifier: ^1.9.3
     version: 1.9.3
+  mina-signer:
+    specifier: ^3.0.6
+    version: 3.0.6
   next:
     specifier: 13.4.12
     version: 13.4.12(@babel/core@7.22.10)(react-dom@18.2.0)(react@18.2.0)
@@ -2616,6 +2619,10 @@ packages:
       file-uri-to-path: 1.0.0
     dev: false
 
+  /blakejs@1.2.1:
+    resolution: {integrity: sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==}
+    dev: false
+
   /bn.js@4.12.0:
     resolution: {integrity: sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==}
     dev: false
@@ -4262,6 +4269,10 @@ packages:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
     dev: false
 
+  /js-sha256@0.9.0:
+    resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
+    dev: false
+
   /js-sha3@0.8.0:
     resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}
     dev: false
@@ -4481,6 +4492,13 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
+    dev: false
+
+  /mina-signer@3.0.6:
+    resolution: {integrity: sha512-6btzN/sTpCpxtLi/zGenR6f9lhTQpRjfTNOyOrVC7IVKkooxUBSykj/uAaBdOGf5WminHfLmnO0Wp1O4CxZtzA==}
+    dependencies:
+      blakejs: 1.2.1
+      js-sha256: 0.9.0
     dev: false
 
   /mini-svg-data-uri@1.4.4:

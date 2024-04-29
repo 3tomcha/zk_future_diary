@@ -22,6 +22,7 @@
     "eslint-config-next": "13.4.12",
     "ethers": "^6.7.0",
     "leaflet": "^1.9.3",
+    "mina-signer": "^3.0.6",
     "next": "13.4.12",
     "node-fetch": "^3.3.2",
     "postcss": "8.4.27",
