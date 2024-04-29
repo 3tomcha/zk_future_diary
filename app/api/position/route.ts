@@ -1,31 +1,52 @@
 import { NextRequest } from 'next/server'
-import pinataSDK from "@pinata/sdk";
+import fetch from 'node-fetch'
+// import pinataSDK from "@pinata/sdk";
+
+type GoogleMapsResponse = {
+  status: string;
+  results: PlaceResult[];
+  error_message?: string;
+};
+
+type PlaceResult = {
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+    viewport?: {
+      northeast: { lat: number; lng: number };
+      southwest: { lat: number; lng: number };
+    };
+  };
+  name: string;
+  opening_hours?: {
+    open_now: boolean;
+  };
+  photos?: {
+    height: number;
+    width: number;
+    photo_reference: string;
+  }[];
+  place_id: string;
+  rating?: number;
+  reference: string;
+  types: string[];
+};
+
 
 export async function GET(req: NextRequest) {
-  const hash = req.nextUrl.searchParams.get("hash");
+  const GOOGLEMAP_API_KEY = process.env.GOOGLEMAP_API_KEY
+  console.log(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Tokyo&key=${GOOGLEMAP_API_KEY}`)
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+Tokyo&key=${GOOGLEMAP_API_KEY}`
+  )
+  const responseJSON = await response.json() as GoogleMapsResponse
+  const geometries = responseJSON.results.map(r => r.geometry)
+  console.log(geometries)
 
-  if (!hash) {
-    return;
-  }
-  const hashNumber = BigInt(hash);
-
-  // ハッシュ値を範囲 0-1 にマッピング
-  const normalizedLat = (Number(hashNumber % BigInt(1000000)) / 1000000);
-  const normalizedLon = (Number((hashNumber / BigInt(1000000)) % BigInt(1000000)) / 1000000);
-
-  const mapValue = (value: number, start1: number, stop1: number, start2: number, stop2: number) => {
-    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
-  };
-
-  const latitude = mapValue(normalizedLat, 0, 1, 35.525, 35.815);
-  const longitude = mapValue(normalizedLon, 0, 1, 139.595, 139.925);
-
-  const position = {
-    latitude: latitude,
-    longitude: longitude
-  }
-
-  return new Response(JSON.stringify(position), {
+  return new Response(JSON.stringify(geometries), {
     status: 200,
     headers: {
       'Content-Type': 'application/json'

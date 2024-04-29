@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react"
 
 export default function useLocation() {
@@ -23,23 +24,6 @@ export default function useLocation() {
       "\nLongitude: " + position.coords.longitude);
     setUserLatitude(position.coords.latitude)
     setUserLongitude(position.coords.longitude)
-  }
-
-  const showError = (error: GeolocationPositionError) => {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        alert("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        alert("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        alert("The request to get user location timed out.");
-        break;
-      default:
-        alert("An unknown error occurred.");
-        break;
-    }
   }
 
   return {
