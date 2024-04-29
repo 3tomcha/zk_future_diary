@@ -2,7 +2,7 @@
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { optimismGoerli } from "wagmi/chains";
 import { publicProvider } from 'wagmi/providers/public';
-// import 'leaflet/dist/leaflet.css';
+import RecoilProvider from './recoilProvider'
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [optimismGoerli],
@@ -24,7 +24,7 @@ export default function RootLayout({
       <html lang="ja">
         <head />
         <body>
-          {children}
+          <RecoilProvider>{children}</RecoilProvider>
         </body>
       </html>
     </WagmiConfig>
