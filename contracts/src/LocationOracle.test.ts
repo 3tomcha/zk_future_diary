@@ -7,7 +7,6 @@ import {
   AccountUpdate,
   Signature,
   NetworkId,
-  Scalar,
 } from 'o1js';
 
 let proofsEnabled = false;
@@ -37,7 +36,6 @@ describe('LocationOracle.js', () => {
     senderKey = Local.testAccounts[1].key;
     zkAppPrivateKey = PrivateKey.random();
     zkAppAddress = zkAppPrivateKey.toPublicKey();
-    // console.log(zkAppAddress)
     // zkAppPrivateKey = new PrivateKey(Scalar.from(process.env.PRIVATE_KEY ?? ""))
     // zkAppAddress = zkAppPrivateKey.toPublicKey();
     zkApp = new LocationOracle(zkAppAddress);
