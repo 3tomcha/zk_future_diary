@@ -109,15 +109,17 @@ sequenceDiagram
     participant Frontend
     participant Backend
     participant ZKPModule
+    participant LocalStorage
 
     User->>Frontend: ①スケジュールを作る\n目標を入力して生成ボタンを押す
     Frontend->>Backend: POST /create-schedule\n{goal: "14:00にカフェに行く"}
     Backend-->>Frontend: 200 OK\n{schedule: "14:00にカフェに行く"}
+    Frontend->>LocalStorage: Save schedule\n{schedule: "14:00にカフェに行く"}
     Frontend-->>User: スケジュールが生成されました
 
     User->>Frontend: ②スケジュールを見る
-    Frontend->>Backend: GET /view-schedule
-    Backend-->>Frontend: 200 OK\n{schedule: "14:00にカフェに行く"}
+    Frontend->>LocalStorage: Load schedule
+    LocalStorage-->>Frontend: {schedule: "14:00にカフェに行く"}
     Frontend-->>User: スケジュール表示
 
     User->>Frontend: ③検証する
@@ -129,4 +131,5 @@ sequenceDiagram
     Frontend->>Backend: POST /share-schedule\n{schedule: "14:00にカフェに行く", verified: true}
     Backend-->>Frontend: 200 OK\n{shared: true}
     Frontend-->>User: 未来日記を共有しました
+
 ```
