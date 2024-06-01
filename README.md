@@ -104,8 +104,29 @@ Auro Walletがインストールされていること
 スケジュールの画像の生成に使用
 
 ```mermaid
-graph TD;
-    A[あなたのなりたい姿を書く] -->
-    B[chatgptに問い合わせ] -->
-    C[未来日記を生成] -->
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant ZKPModule
+
+    User->>Frontend: ①スケジュールを作る\n目標を入力して生成ボタンを押す
+    Frontend->>Backend: POST /create-schedule\n{goal: "14:00にカフェに行く"}
+    Backend-->>Frontend: 200 OK\n{schedule: "14:00にカフェに行く"}
+    Frontend-->>User: スケジュールが生成されました
+
+    User->>Frontend: ②スケジュールを見る
+    Frontend->>Backend: GET /view-schedule
+    Backend-->>Frontend: 200 OK\n{schedule: "14:00にカフェに行く"}
+    Frontend-->>User: スケジュール表示
+
+    User->>Frontend: ③検証する
+    Frontend->>ZKPModule: Verify Schedule\n{time: "14:00", location: "カフェ", photo: "カフェの写真"}
+    ZKPModule-->>Frontend: Verification Result\n{valid: true}
+    Frontend-->>User: 検証結果を表示
+
+    User->>Frontend: ④共有する
+    Frontend->>Backend: POST /share-schedule\n{schedule: "14:00にカフェに行く", verified: true}
+    Backend-->>Frontend: 200 OK\n{shared: true}
+    Frontend-->>User: 未来日記を共有しました
 ```
