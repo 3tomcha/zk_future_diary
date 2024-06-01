@@ -103,3 +103,11 @@ Auro Walletがインストールされていること
 ### StableDiffusionAPI
 スケジュールの画像の生成に使用
 
+```mermaid
+graph TD;
+    A[スタート] --> B{条件};
+    B -->|Yes| C[処理1];
+    B -->|No| D[処理2];
+    C --> E[終了];
+    D --> E[終了];
+```
