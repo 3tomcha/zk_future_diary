@@ -102,28 +102,32 @@ export function Verifyw() {
 
   return <div></div>
 }
+
 export default function Verify() {
   const { getLocation, userLatitude, userLongitude } = useLocation();
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
 
-  const handlePosition = async () => {
+  const verify = async () => {
     const res = await fetch(`/api/position`)
-    console.log(res)
+    const json = await res.json()
     if (res.ok) {
-      const position = await res.json();
-      console.log(position);
-      setLatitude(position.latitude);
-      setLongitude(position.longitude);
+      alert("verify success")
+    } else {
+      alert("verify failed")
     }
   }
 
   return (
     <div className="container">
       <button onClick={getLocation}>getLocation</button>
-      <button onClick={handlePosition}>handlePosition</button>
+      <button onClick={verify}>verify</button>
+      {userLatitude != 0 && userLongitude != 0 && (
+        <>
+          <h2>{userLatitude}</h2>
+          <h2>{userLongitude}</h2>
+        </>
+      )}
       <h1>未来日記</h1>
       <Verifyw />
-    </div>
+    </div >
   )
 }
