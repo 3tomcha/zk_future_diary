@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --experimental-https",
-    "build": "next build",
+    "build:contracts": "cd contracts && npm run build",
+    "build": "npm run build:contracts && npm run build:main",
+    "build:main": "next build",
     "start": "next start",
     "lint": "next lint"
   },
