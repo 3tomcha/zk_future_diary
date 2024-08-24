@@ -8,27 +8,21 @@ export default function useLocation() {
   const getLocation = () => {
     console.log("getLocation")
     if (navigator.geolocation) {
-      console.log(navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position)
-      }))
-      // 位置情報を取得する
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
+      console.log(navigator.geolocation)
+      navigator.geolocation.getCurrentPosition((position) => {
+        setUserLatitude(position.coords.latitude)
+        setUserLongitude(position.coords.longitude)
+
+        alert("Latitude: " + position.coords.latitude +
+          "\nLongitude: " + position.coords.longitude);
+      })
     } else {
       alert("Geolocation is not supported by this browser.");
     }
   }
 
-  const showPosition = (position: GeolocationPosition) => {
-    console.log(position)
-    alert("Latitude: " + position.coords.latitude +
-      "\nLongitude: " + position.coords.longitude);
-    setUserLatitude(position.coords.latitude)
-    setUserLongitude(position.coords.longitude)
-  }
-
   return {
     getLocation,
-    showPosition,
     userLatitude,
     userLongitude
   };

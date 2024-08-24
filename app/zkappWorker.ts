@@ -5,6 +5,7 @@ type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 // ---------------------------------------------------------------------------------------
 
 import type { LocationOracle } from '../contracts/build/src/LocationOracle.js';
+import { ConstantField } from 'o1js/dist/node/lib/provable/field.js';
 
 const state = {
   LocationOracle: null as null | typeof LocationOracle,
