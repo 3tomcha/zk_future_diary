@@ -1,11 +1,10 @@
-import { Mina, PublicKey, fetchAccount } from 'o1js';
+import { Field, Mina, PublicKey, Signature, fetchAccount } from 'o1js';
 
 type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { TimeOracle } from '../contracts/build/src/TimeOracle.js';
-import { ConstantField } from 'o1js/dist/node/lib/provable/field.js';
+import type { TimeOracle } from '../../contracts/src/TimeOracle';
 
 const state = {
   TimeOracle: null as null | typeof TimeOracle,
@@ -16,15 +15,16 @@ const state = {
 // ---------------------------------------------------------------------------------------
 
 const functions = {
-  setActiveInstanceToBerkeley: async (args: {}) => {
-    const Berkeley = Mina.Network(
-      'https://api.minascan.io/node/berkeley/v1/graphql'
+  setActiveInstanceToDevnet: async (args: {}) => {
+    const Network = Mina.Network(
+      'https://api.minascan.io/node/devnet/v1/graphql'
     );
-    console.log('Berkeley Instance Created');
-    Mina.setActiveInstance(Berkeley);
+    console.log('Devnet network instance configured.');
+    Mina.setActiveInstance(Network);
+    console.log(Mina.activeInstance)
   },
   loadContract: async (args: {}) => {
-    const { TimeOracle } = await import('../contracts/build/src/TimeOracle.js');
+    const { TimeOracle } = await import('../../../contracts/build/src/TimeOracle.js');
     state.TimeOracle = TimeOracle;
   },
   compileContract: async (args: {}) => {
@@ -38,13 +38,17 @@ const functions = {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
     state.zkapp = new state.TimeOracle!(publicKey);
   },
-  // getNum: async (args: {}) => {
-  //   const currentNum = await state.zkapp!.num.get();
-  //   return JSON.stringify(currentNum.toJSON());
-  // },
-  createUpdateTransaction: async (args: {}) => {
+  createUpdateTransaction: async (timestamp: Field, signature: Signature, startTime: Field, endTime: Field) => {
+    if (!Mina.activeInstance) {
+      await functions.setActiveInstanceToDevnet({});
+    }
     const transaction = await Mina.transaction(async () => {
-      // await state.zkapp!.update();
+      await state.zkapp?.verify(
+        timestamp, // ミリ秒から秒に変換
+        signature,
+        startTime,
+        endTime
+      );
     });
     state.transaction = transaction;
   },

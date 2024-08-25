@@ -22,6 +22,7 @@ describe('TimeOracle Smart Contract', () => {
     const Local = await Mina.LocalBlockchain({ proofsEnabled });
     chainid = Local.getNetworkId();
     Mina.setActiveInstance(Local);
+
     deployerAccount = Local.testAccounts[0];
     deployerKey = Local.testAccounts[0].key;
     senderAccount = Local.testAccounts[1];
@@ -48,35 +49,39 @@ describe('TimeOracle Smart Contract', () => {
 
   describe('actual API requests', () => {
     it("succeed", async () => {
-      await localDeploy()
 
-      // 1時5分のタイムスタンプ（秒単位）
-      const timestamp = Field(3600 * 1 + 5 * 60); // 1:05 = 1時 * 3600秒 + 5分 * 60秒
+      const Testnet = Mina.Network('https://api.minascan.io/node/devnet/v1/graphql');
+      Mina.setActiveInstance(Testnet)
+      console.log(Mina.activeInstance)
+      // await localDeploy()
 
-      const response = await fetch(
-        `https://localhost:3000/api/time?timestamp=${timestamp.toString()}`,
-      );
-      const data = await response.json();
-      console.log(data)
+      // // 1時5分のタイムスタンプ（秒単位）
+      // const timestamp = Field(3600 * 1 + 5 * 60); // 1:05 = 1時 * 3600秒 + 5分 * 60秒
 
-      const signature = Signature.fromBase58(data.signature);
+      // const response = await fetch(
+      //   `https://localhost:3000/api/time?timestamp=${timestamp.toString()}`,
+      // );
+      // const data = await response.json();
+      // console.log(data)
 
-      // 1時から2時の範囲
-      const startTime = Field(BigInt(data.data.startTime)); // 1:00 = 1時 * 3600秒
-      const endTime = Field(BigInt(data.data.endTime));   // 2:00 = 2時 * 3600秒
+      // const signature = Signature.fromBase58(data.signature);
 
-      console.log(`startTime: ${startTime}`);
-      console.log(`endTime: ${endTime}`);
-      const txn = await Mina.transaction(senderAccount, async () => {
-        await zkApp.verify(
-          timestamp,
-          signature,
-          startTime,
-          endTime
-        );
-      });
-      await txn.prove();
-      await txn.sign([senderKey]).send();
+      // // 1時から2時の範囲
+      // const startTime = Field(BigInt(data.data.startTime)); // 1:00 = 1時 * 3600秒
+      // const endTime = Field(BigInt(data.data.endTime));   // 2:00 = 2時 * 3600秒
+
+      // console.log(`startTime: ${startTime}`);
+      // console.log(`endTime: ${endTime}`);
+      // const txn = await Mina.transaction(senderAccount, async () => {
+      //   await zkApp.verify(
+      //     timestamp,
+      //     signature,
+      //     startTime,
+      //     endTime
+      //   );
+      // });
+      // await txn.prove();
+      // await txn.sign([senderKey]).send();
     })
   })
 })

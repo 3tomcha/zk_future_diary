@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
@@ -33,10 +33,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "ui/.next/types/**/*.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "contracts"
+    "ui/contracts"
   ]
 }

@@ -1,16 +1,16 @@
-import { fetchAccount, PublicKey, Field } from 'o1js';
+import { Field, PublicKey, fetchAccount } from 'o1js';
 
 import type {
-  ZkappWorkerRequest,
-  ZkappWorkerReponse,
   WorkerFunctions,
+  ZkappWorkerReponse,
+  ZkappWorkerRequest,
 } from './zkappWorker';
 
 export default class ZkappWorkerClient {
   // ---------------------------------------------------------------------------------------
 
-  setActiveInstanceToBerkeley() {
-    return this._call('setActiveInstanceToBerkeley', {});
+  setActiveInstanceToDevnet() {
+    return this._call('setActiveInstanceToDevnet', {});
   }
 
   loadContract() {
@@ -37,11 +37,6 @@ export default class ZkappWorkerClient {
       publicKey58: publicKey.toBase58(),
     });
   }
-
-  // async getNum(): Promise<Field> {
-  //   const result = await this._call('getNum', {});
-  //   return Field.fromJSON(JSON.parse(result as string));
-  // }
 
   createUpdateTransaction() {
     return this._call('createUpdateTransaction', {});
@@ -88,14 +83,6 @@ export default class ZkappWorkerClient {
       };
 
       this.worker.postMessage(message);
-
-      // タイムアウトを設定して、応答がない場合はエラーとする
-      setTimeout(() => {
-        if (this.promises[this.nextId]) {
-          this.promises[this.nextId].reject(new Error("Timeout - Worker did not respond"));
-          delete this.promises[this.nextId];
-        }
-      }, 10000); // 10秒後にタイムアウト
 
       this.nextId++;
     });
