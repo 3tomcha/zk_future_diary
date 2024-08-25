@@ -7,7 +7,7 @@ import { Field, PublicKey } from 'o1js';
 // ユーザーの位置情報の取得
 // verifyapi
 // function Verifyw() {
-//   let transactionFee = 0.1;
+//   let ee = 0.1;
 //   const ZKAPP_ADDRESS = 'B62qo2Be4Udo5EG1ux9yMJVkXe9Gz945cocN7Bn4W9DSYyeHZr1C3Ea';
 
 //   const [state, setState] = useState({

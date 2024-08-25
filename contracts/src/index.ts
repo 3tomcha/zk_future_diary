@@ -1,3 +1,5 @@
-import { LocationOracle } from './LocationOracle.js';
+import { TimeOracle } from './TimeOracle.js';
+// import { LocationOracle } from './LocationOracle.js';
 
-export { LocationOracle };
+// export { LocationOracle, TimeOracle };
+export { TimeOracle };

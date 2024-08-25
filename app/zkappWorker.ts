@@ -4,12 +4,12 @@ type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { LocationOracle } from '../contracts/build/src/LocationOracle.js';
+import type { TimeOracle } from '../contracts/build/src/TimeOracle.js';
 import { ConstantField } from 'o1js/dist/node/lib/provable/field.js';
 
 const state = {
-  LocationOracle: null as null | typeof LocationOracle,
-  zkapp: null as null | LocationOracle,
+  TimeOracle: null as null | typeof TimeOracle,
+  zkapp: null as null | TimeOracle,
   transaction: null as null | Transaction,
 };
 
@@ -24,11 +24,11 @@ const functions = {
     Mina.setActiveInstance(Berkeley);
   },
   loadContract: async (args: {}) => {
-    const { LocationOracle } = await import('../contracts/build/src/LocationOracle.js');
-    state.LocationOracle = LocationOracle;
+    const { TimeOracle } = await import('../contracts/build/src/TimeOracle.js');
+    state.TimeOracle = TimeOracle;
   },
   compileContract: async (args: {}) => {
-    await state.LocationOracle!.compile();
+    await state.TimeOracle!.compile();
   },
   fetchAccount: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
@@ -36,7 +36,7 @@ const functions = {
   },
   initZkappInstance: async (args: { publicKey58: string }) => {
     const publicKey = PublicKey.fromBase58(args.publicKey58);
-    state.zkapp = new state.LocationOracle!(publicKey);
+    state.zkapp = new state.TimeOracle!(publicKey);
   },
   // getNum: async (args: {}) => {
   //   const currentNum = await state.zkapp!.num.get();

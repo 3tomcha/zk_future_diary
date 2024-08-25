@@ -43,6 +43,7 @@ describe('TimeOracle Smart Contract', () => {
     await txn.prove();
     // this tx needs .sign(), because `deploy()` adds an account update that requires signature authorization
     await txn.sign([deployerKey, zkAppPrivateKey]).send();
+    console.log(`Smart contract deployed at address: ${zkAppAddress.toBase58()}`);
   }
 
   describe('actual API requests', () => {
