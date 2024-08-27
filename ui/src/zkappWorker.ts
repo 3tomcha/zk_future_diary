@@ -39,18 +39,20 @@ const functions = {
     state.zkapp = new state.TimeOracle!(publicKey);
   },
   createUpdateTransaction: async (args: {
-    timestamp: any,
     signature: any,
     startTime: any,
     endTime: any
+    targetStartTimestamp: any,
+    targetEndTimestamp: any
   }) => {
     console.log(args)
     const transaction = await Mina.transaction(async () => {
       await state.zkapp?.verify(
-        Field(args.timestamp),
         Signature.fromBase58(args.signature),
         Field(args.startTime),
-        Field(args.endTime)
+        Field(args.endTime),
+        Field(args.targetStartTimestamp),
+        Field(args.targetEndTimestamp)
       );
     });
     state.transaction = transaction;

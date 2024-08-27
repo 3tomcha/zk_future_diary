@@ -39,10 +39,11 @@ export default class ZkappWorkerClient {
   }
 
   createUpdateTransaction(args: {
-    timestamp: any,
     signature: any,
     startTime: any,
-    endTime: any
+    endTime: any,
+    targetStartTimestamp: any,
+    targetEndTimestamp: any
   }) {
     console.log(args)
     return this._call('createUpdateTransaction', args);

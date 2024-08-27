@@ -101,16 +101,17 @@ export default function Home() {
     })()
   }, [])
 
-  const handleVerify = async () => {
-    const response = await fetch("/api/time")
+  const handleVerify = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
+    const timestamp = Math.floor(new Date().getTime() / 1000)
+    const response = await fetch(`/api/time?timestamp=${timestamp}`)
     const data = await response.json()
     console.log(data)
-    const timestamp = new Date().getTime()
     const args = {
-      timestamp: timestamp,
       signature: data.signature,
       startTime: data.data.startTime,
-      endTime: data.data.endTime
+      endTime: data.data.endTime,
+      targetStartTimestamp: targetStartTimestamp,
+      targetEndTimestamp: targetEndTimestamp
     }
     await state.zkappWorkerClient!.createUpdateTransaction(
       args
