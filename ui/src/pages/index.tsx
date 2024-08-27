@@ -134,7 +134,7 @@ export default function Home() {
       console.log(hash)
     } catch (error) {
       console.error('Error occurred during verification:', error);
-      alert(`Verification failed: ${error.message}`);
+      alert(`Verification failed`);
     }
   }
   const handlePromptChange = (event: any) => {
