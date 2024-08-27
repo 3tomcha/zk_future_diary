@@ -32,13 +32,13 @@ If you complete each task, verify it! Time, location, activity.
 
 ---
 ## Demo(verify time)
-If you went to the gym at 17:05 in a fitness club, let's prove time, activity, location.
-by the hour, 17:05 falls within the 17:00 to 18:00 time range.
+If you went to the gym at 17:05 in a fitness club,
+First, let's prove you were gym at 17:00 - 18:00
 ![bg right:70% 100%](https://github.com/user-attachments/assets/85428d65-1c58-49b9-8eda-58bb86dfd87e)
 
 ---
 ## Demo(verify time)
-Get signature and startTime and endTime from oracle API.
+Get signature and startTime and endTime from Oracle API.
 Use TimeOracle Contract, verify your time is 17:00 - 18:00.
 ![bg right:70% 100%](https://github.com/user-attachments/assets/86550005-6d61-46fc-a310-ed5d3c188516)
 
@@ -70,4 +70,4 @@ You can prove.
 
 Open the floor for questions and discussions.
 https://zkfuturediary-3tomchas-projects.vercel.app/
-![bg right:70% 100%]![alt text](image.png)
+![bg right:50% 100%](image.png)
