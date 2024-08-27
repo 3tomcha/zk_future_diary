@@ -4,7 +4,7 @@ type Transaction = Awaited<ReturnType<typeof Mina.transaction>>;
 
 // ---------------------------------------------------------------------------------------
 
-import type { TimeOracle } from '../../contracts/src/TimeOracle';
+import type { TimeOracle } from './TimeOracle';
 
 const state = {
   TimeOracle: null as null | typeof TimeOracle,
