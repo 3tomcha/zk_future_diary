@@ -31,12 +31,6 @@ If you complete each task, verify it! Time, location, activity.
 ![bg right:40% 100%](https://github.com/user-attachments/assets/80405408-cc17-421c-8254-1b6a3ddf2ca5)
 
 ---
-## Key Features
-
-- **Privacy Protection:** o1js helps securely and privately verify data like location, time, and images.
-- **Multi-Factor Verification:** Combines data from location, time, and images to confirm each task from different angles.
-
----
 ## Demo(verify time)
 If you went to the gym at 17:05 in a fitness club, let's prove time, activity, location.
 by the hour, 17:05 falls within the 17:00 to 18:00 time range.
@@ -53,6 +47,12 @@ Use TimeOracle Contract, verify your time is 17:00 - 18:00.
 ## Demo(verify time)
 You can prove.
 ![bg right:70% 100%](https://github.com/user-attachments/assets/3b3d983f-adfc-4081-99f7-aa4619cde18f)
+
+---
+## Key Features
+
+- **Privacy Protection:** o1js helps securely and privately verify data like location, time, and images.
+- **Multi-Factor Verification:** Combines data from location, time, and images to confirm each task from different angles.
 
 ---
 ### Future Vision
