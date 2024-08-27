@@ -3,16 +3,17 @@ import styles from "./ScheduleItem.module.css";
 type Schedule = {
   time: string;
   value: string;
+  location: string;
   image?: string;
   onVerify: () => void;
 };
 
-export default function ScheduleItem({ time, value, image, onVerify }: Schedule) {
+export default function ScheduleItem({ time, value, image, location, onVerify }: Schedule) {
   return (
     <>
       <li className={styles.scheduleItem}>
         <div>
-          <span className={styles.time}>{time}</span>: {value}
+          <span className={styles.time}>{time}</span>: {value}: {location}
         </div>
         <div className={styles.verifyButtons}>
           <button className={styles.verify} onClick={onVerify}>verify time</button>

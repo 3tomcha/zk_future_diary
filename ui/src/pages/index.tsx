@@ -137,6 +137,20 @@ export default function Home() {
     await fetchSchedule(prompt);
     setLoading(false);
   }
+  console.log(schedule)
+  if (schedule && schedule.length > 0) {
+    return (
+      <div className="container">
+        <ul className="schedule-list" id="schedule">
+          {schedule.map((item) => {
+            return (
+              <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
 
   return (
     <div className="container">
@@ -157,17 +171,4 @@ export default function Home() {
       </div>
     </div>
   )
-  // if (state.hasWallet) {
-  //   return (
-  //     <div className="container">
-  //       <ul className="schedule-list" id="schedule">
-  //         {mockSchedule.map((item) => {
-  //           return (
-  //             <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
-  //           )
-  //         })}
-  //       </ul>
-  //     </div>
-  //   )
-  // }
 }
