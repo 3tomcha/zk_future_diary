@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ZkappWorkerClient from "../zkappWorkerClient";
 import { Field, PublicKey, Signature } from "o1js";
 import ScheduleItem from "@/components/ScheduleItem";
+import { useGenerateschedule } from "@/hooks/useGenerateSchedule";
 
 const mockSchedule = [
   { "time": "00:00", "value": "睡眠" },
@@ -61,6 +62,9 @@ export default function Home() {
     zkAppPrivateKey: null,
     creatingTransaction: false
   })
+  const [prompt, setPrompt] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { schedule, fetchSchedule, setSchedule } = useGenerateschedule();
 
   useEffect(() => {
     (async () => {
@@ -125,18 +129,45 @@ export default function Home() {
     });
     console.log(hash)
   }
-
-  if (state.hasWallet) {
-    return (
-      <div className="container">
-        <ul className="schedule-list" id="schedule">
-          {mockSchedule.map((item) => {
-            return (
-              <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
-            )
-          })}
-        </ul>
-      </div>
-    )
+  const handlePromptChange = (event: any) => {
+    setPrompt(event.target.value);
+  };
+  const updateSchedule = async () => {
+    setLoading(true);
+    await fetchSchedule(prompt);
+    setLoading(false);
   }
+
+  return (
+    <div className="container">
+      <h1>未来日記</h1>
+      <div className="form-container">
+        <input
+          type="text"
+          className="form-input"
+          id="prompt"
+          placeholder="あなたのなりたい姿を具体的に書いてね"
+          value={prompt}
+          onChange={handlePromptChange}
+          required
+        />
+        <button className="form-button" onClick={updateSchedule}>
+          生成
+        </button>
+      </div>
+    </div>
+  )
+  // if (state.hasWallet) {
+  //   return (
+  //     <div className="container">
+  //       <ul className="schedule-list" id="schedule">
+  //         {mockSchedule.map((item) => {
+  //           return (
+  //             <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
+  //           )
+  //         })}
+  //       </ul>
+  //     </div>
+  //   )
+  // }
 }
