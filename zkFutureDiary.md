@@ -67,7 +67,9 @@ You can prove.
 
 ---
 ## Q&A
-
-Open the floor for questions and discussions.
+repo
+https://github.com/3tomcha/zk_future_diary
+demo
 https://zkfuturediary-3tomchas-projects.vercel.app/
+![bg right:50% 100%](image-1.png)
 ![bg right:50% 100%](image.png)
