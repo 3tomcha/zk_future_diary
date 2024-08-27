@@ -19,8 +19,11 @@
     "mina-signer": "^3.0.7",
     "next": "14.2.6",
     "o1js": "1.0.1",
+    "openai": "^4.56.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "typescript": "5.5.4"
   }
 }
