@@ -1,135 +1,75 @@
-# zkFutureDiary
-No more need for the hassle of creating schedules for goal achievement.<br>
-From now on, all you need to do is enter your goals.<br>
-AI will automatically create a schedule for you, and all you have to do is follow it to achieve your goals.<br>
-Zero-knowledge proofs ensure your privacy while reliably proving goal achievement.<br>
-This is "zkFutureDiary." Let's dive into the future you've designed!<br>
+---
+marp: true
+theme: default
+headingDivider: 1
+---
 
-<img width="740" alt="Screenshot 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194"><br>
+# ZK Future Diary
+## Your New Way to Design the Future
+### Presented by: Tomoya Kobayashi
 
-## Recommended Environment
-PC: Latest version of Brave<br>
+---
 
-## Prerequisites
-Auro Wallet must be installed
+## To design your future, your first need is a goal, right?
 
-## How to Use
-### ① Create a Schedule
-Enter your goal in the input box on the left and press the generate button.<br>
+---
 
-### ② View the Schedule
-You can view the schedule that has been generated.<br>
+## Do you really want to go through the hassle?  
+## Do you want to create a whole schedule just to reach that goal? 
 
-### ③ Verify
-Use the current time, location, and camera function to prove that you have indeed achieved what is outlined in your Future Diary.<br>
-Verification can be done while protecting your privacy through zero-knowledge proofs.<br>
-Example:<br>
-If the schedule says "Go to a cafe at 14:00," the following three points are verified:<br>
-・The current time is 14:00<br>
-・Current location is included in the list of cafe locations<br>
-・The photo taken with the camera function is indeed in a cafe<br>
+---
 
-### ④ Share
-Share your success in achieving your Future Diary goals with X<br>
-Zero-knowledge proofs allow you to confidently showcase your achievements!<br>
+## ZK Future Diary ...
+### Goal Achievement Engine with AI & Zero-Knowledge
+AI creates schedules for you based on your goals. Just set your goals, follow the plan, and achieve your objectives, with your privacy fully protected.
 
-"My goal was to 'find a cool cafe.'"
-"Today, I achieved my goal of going to a cafe at 14:00."
-"It was reliably proven through zero-knowledge proofs."
-7mX2W8KgizCD8PjhMV2KpG1vw94S3NroAg5H3e3hu9JGVQsL4ZQFPixpfT6U1K2qamj3q1u1DXj1MzqHjB1oJ1uHuJ1LgGzf
+---
+## Example
+If you want to diet..., This is your schedule.
+If you complete each task, verify it! Time, location, activity.
 
-### Options
-### A Image Generation
-You can generate an image for a random hour of your schedule.<br>
+![bg right:40% 100%](https://github.com/user-attachments/assets/80405408-cc17-421c-8254-1b6a3ddf2ca5)
 
-# Technical Information
-### GoogleMap API
-Used for location verification
+---
+## Demo(verify time)
+If you went to the gym at 17:05 in a fitness club,
+First, let's prove you were gym at 17:00 - 18:00
+![bg right:70% 100%](https://github.com/user-attachments/assets/85428d65-1c58-49b9-8eda-58bb86dfd87e)
 
-### OpenAI API
-Used for schedule creation, and processing submitted images
+---
+## Demo(verify time)
+Get signature and startTime and endTime from Oracle API.
+Use TimeOracle Contract, verify your time is 17:00 - 18:00.
+![bg right:70% 100%](https://github.com/user-attachments/assets/86550005-6d61-46fc-a310-ed5d3c188516)
 
-### StableDiffusion API
-Used for generating images of the schedule
 
-# zk未来日記
-目標達成のための面倒なスケジュール作成はもう必要ありません。<br>
-これからは、あなたが目標を入力するだけでOK。<br>
-AIが自動的にスケジュールを作成し、それに沿って行動するだけで目標が達成できます。<br>
-ゼロ知識証明によりプライバシーを守りつつ、目標達成が確実に証明されます。<br>
-それが「zk未来日記」。さあ、デザインされた未来へ飛び込みましょう！<br>
+---
+## Demo(verify time)
+You can prove.
+![bg right:70% 100%](https://github.com/user-attachments/assets/3b3d983f-adfc-4081-99f7-aa4619cde18f)
 
-<img width="740" alt="スクリーンショット 2023-06-15 20 29 22" src="https://github.com/3tomcha/mirai_nikki/assets/15997287/b2b0b288-016c-4b9b-a422-dea0c6309194">
+---
+## Key Features
 
-## 推奨環境
-PC: Brave最新版<br>
+- **Privacy Protection:** o1js helps securely and privately verify data like location, time, and images.
+- **Multi-Factor Verification:** Combines data from location, time, and images to confirm each task from different angles.
 
-## 動作前提
-Auro Walletがインストールされていること
+---
+### Future Vision
 
-## 使い方
-### ユーザー
-#### ①スケジュールを作る
-左の入力ボックスに、目標を入力して生成ボタンを押します。<br>
-#### ②スケジュールを見る
-生成されたスケジュールを見ることができます。<br>
-#### ③検証する
-現在の時間、位置、カメラ機能を使って、未来日記を確かに達成したことを証明します。<br>
-ゼロ知識証明によって、プライバシーを守りながら検証できます。<br>
-例）<br>
-スケジュールが「14:00にカフェに行く」の場合、下記の3点を検証<br>
-・現在の時間が14:00であること<br>
-・現在の位置情報がカフェの位置情報一覧に含まれる<br>
-・カメラ機能で撮影した写真がカフェであること<br>
-#### ④共有する
-未来日記を確かに達成できたことをXにシェアしましょう<br>
-ゼロ知識証明によって、確実に達成したことがわかるため、自慢できます！<br>
-```
-私の目標は、「渋いカフェを見つけること」です
-今日私は、14:00にカフェに行くを達成しました
-ゼロ知識証明によって確実に証明されました
-7mX2W8KgizCD8PjhMV2KpG1vw94S3NroAg5H3e3hu9JGVQsL4ZQFPixpfT6U1K2qamj3q1u1DXj1MzqHjB1oJ1uHuJ1LgGzf
-```
+1. **Personalized Schedules**: AI will watch your actions and surroundings into make better schedules just for you.
 
-### オプション
-#### A 画像生成
-スケジュールのランダムな1時間に対して画像を作ることができます。<br>
+2. **Automatic Updates**: Just like Google Maps reroutes you when you take a different path, AI will adjust your schedule automatically to keep you on track.
 
-# 技術情報
-### GoogleMapAPI
-位置情報の検証に使用
-### OpenAIAPI
-スケジュールの作成、投稿した画像に使用
-### StableDiffusionAPI
-スケジュールの画像の生成に使用
+3. **Teamwork Support**: AI helps the team work together. It tells you when it’s your turn to start after someone else finishes, all while keeping everyone's privacy safe.
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant Frontend
-    participant Backend
-    participant ZKPModule
-    participant LocalStorage
 
-    User->>Frontend: ①スケジュールを作る\n目標を入力して生成ボタンを押す
-    Frontend->>Backend: POST /create-schedule\n{goal: "14:00にカフェに行く"}
-    Backend-->>Frontend: 200 OK\n{schedule: "14:00にカフェに行く"}
-    Frontend->>LocalStorage: Save schedule\n{schedule: "14:00にカフェに行く"}
-    Frontend-->>User: スケジュールが生成されました
 
-    User->>Frontend: ②スケジュールを見る
-    Frontend->>LocalStorage: Load schedule
-    LocalStorage-->>Frontend: {schedule: "14:00にカフェに行く"}
-    Frontend-->>User: スケジュール表示
-
-    User->>Frontend: ③検証する
-    Frontend->>ZKPModule: Verify Schedule\n{time: "14:00", location: "カフェ", photo: "カフェの写真"}
-    ZKPModule-->>Frontend: Verification Result\n{valid: true}
-    Frontend-->>User: 検証結果を表示
-
-    User->>Frontend: ④共有する
-    Frontend->>Backend: POST /share-schedule\n{schedule: "14:00にカフェに行く", verified: true}
-    Backend-->>Frontend: 200 OK\n{shared: true}
-    Frontend-->>User: 未来日記を共有しました
-
-```
+---
+## Q&A
+repo
+https://github.com/3tomcha/zk_future_diary
+demo
+https://zkfuturediary-3tomchas-projects.vercel.app/
+![bg right:50% 100%](image-1.png)
+![bg right:50% 100%](image.png)
