@@ -51,8 +51,8 @@ const functions = {
         Signature.fromBase58(args.signature),
         Field(args.startTime),
         Field(args.endTime),
-        Field(args.targetStartTimestamp),
-        Field(args.targetEndTimestamp)
+        Field(BigInt(args.targetStartTimestamp)),
+        Field(BigInt(args.targetEndTimestamp))
       );
     });
     state.transaction = transaction;
