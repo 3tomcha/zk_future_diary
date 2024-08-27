@@ -11,7 +11,7 @@ export class TimeOracle extends SmartContract {
   }
 
   // オラクルから現在の時刻データを提供するメソッドなどを追加
-  @method async verify(timestamp: Field, signature: Signature, startTime: Field, endTime: Field) {
+  @method async verify(signature: Signature, startTime: Field, endTime: Field, targetStartTimestamp: Field, targetEndTimestamp: Field) {
     // オラクルの公開鍵を取得
     const oraclePublicKey = this.oraclePublicKey.get();
     // オラクルの公開鍵が正しいか確認
@@ -21,7 +21,7 @@ export class TimeOracle extends SmartContract {
     validSignature.assertTrue();
 
     // timestamp が startTime から endTime の範囲にあることを確認
-    timestamp.assertGreaterThanOrEqual(startTime);
-    timestamp.assertLessThan(endTime);
+    startTime.assertEquals(targetStartTimestamp);
+    endTime.assertEquals(targetEndTimestamp);
   }
 }

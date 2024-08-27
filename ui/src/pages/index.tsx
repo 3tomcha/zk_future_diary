@@ -101,35 +101,41 @@ export default function Home() {
     })()
   }, [])
 
-  const handleVerify = async () => {
-    const response = await fetch("/api/time")
-    const data = await response.json()
-    console.log(data)
-    const timestamp = new Date().getTime()
-    const args = {
-      timestamp: timestamp,
-      signature: data.signature,
-      startTime: data.data.startTime,
-      endTime: data.data.endTime
+  const handleVerify = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
+    try {
+      const timestamp = Math.floor(new Date().getTime() / 1000)
+      const response = await fetch(`/api/time?timestamp=${timestamp}`)
+      const data = await response.json()
+      console.log(data)
+      const args = {
+        signature: data.signature,
+        startTime: data.data.startTime,
+        endTime: data.data.endTime,
+        targetStartTimestamp: targetStartTimestamp,
+        targetEndTimestamp: targetEndTimestamp
+      }
+      await state.zkappWorkerClient!.createUpdateTransaction(
+        args
+      );
+      console.log('Creating proof...');
+      await state.zkappWorkerClient!.proveUpdateTransaction();
+
+      console.log('Requesting send transaction...');
+      const transactionJSON = await state.zkappWorkerClient!.getTransactionJSON();
+
+      console.log('Getting transaction JSON...');
+      const { hash } = await (window as any).mina.sendTransaction({
+        transaction: transactionJSON,
+        feePayer: {
+          fee: 0.1,
+          memo: '',
+        },
+      });
+      console.log(hash)
+    } catch (error) {
+      console.error('Error occurred during verification:', error);
+      alert(`Verification failed`);
     }
-    await state.zkappWorkerClient!.createUpdateTransaction(
-      args
-    );
-    console.log('Creating proof...');
-    await state.zkappWorkerClient!.proveUpdateTransaction();
-
-    console.log('Requesting send transaction...');
-    const transactionJSON = await state.zkappWorkerClient!.getTransactionJSON();
-
-    console.log('Getting transaction JSON...');
-    const { hash } = await (window as any).mina.sendTransaction({
-      transaction: transactionJSON,
-      feePayer: {
-        fee: 0.1,
-        memo: '',
-      },
-    });
-    console.log(hash)
   }
   const handlePromptChange = (event: any) => {
     setPrompt(event.target.value);
