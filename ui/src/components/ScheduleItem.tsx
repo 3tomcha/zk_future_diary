@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./ScheduleItem.module.css";
 import { useGenerateImage } from "@/hooks/useGenerateImage";
 
@@ -7,7 +7,8 @@ type Schedule = {
   value: string;
   location: string;
   image?: string;
-  onVerify: (startTimestamp: Number, endTimestamp: Number) => void;
+  onVerifyTime: (startTimestamp: Number, endTimestamp: Number) => void;
+  onVerifyActivity: (activity: string) => void
 };
 
 function convertTimeToTimestamp(time: string): number {
@@ -24,15 +25,28 @@ function convertTimeToTimestamp(time: string): number {
   return Math.floor(today.getTime() / 1000);
 }
 
-export default function ScheduleItem({ time, value, location, onVerify }: Schedule) {
+export default function ScheduleItem({ time, value, location, onVerifyTime, onVerifyActivity }: Schedule) {
+  const [selectedFile, setSelectedFile] = useState(null);
   const { image, fetchImage } = useGenerateImage();
   const handleImage = async () => {
     await fetchImage(value)
   }
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectedFile((event.target as any).files[0]);
+  };
   const handleVerifyTime = () => {
     const startTimestamp = convertTimeToTimestamp(time);
     const endTimestamp = convertTimeToTimestamp(time) + 3600;
-    onVerify(startTimestamp, endTimestamp)
+    onVerifyTime(startTimestamp, endTimestamp)
+  }
+  const handleVerifyActivity = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      alert('ファイルを選択してください');
+      return;
+    }
+    onVerifyActivity(value)
   }
   return (
     <>
@@ -46,7 +60,9 @@ export default function ScheduleItem({ time, value, location, onVerify }: Schedu
         <div className={styles.verifyButtons}>
           <button onClick={handleImage}>create image</button>
           <button className={styles.verify} onClick={handleVerifyTime}>verify time</button>
-          <button className={styles.verify} onClick={handleVerifyTime}>verify activity</button>
+          <form onSubmit={handleVerifyActivity}>
+            <input type="file" onChange={handleFileChange} accept="image/*" className={styles.verify} >verify activity</input>
+          </form>
           <button className={styles.verify} onClick={handleVerifyTime}>verify location</button>
         </div>
       </li>

@@ -101,7 +101,7 @@ export default function Home() {
     })()
   }, [])
 
-  const handleVerify = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
+  const handleVerifyTime = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
     try {
       const timestamp = Math.floor(new Date().getTime() / 1000)
       const response = await fetch(`/api/time?timestamp=${timestamp}`)
@@ -137,6 +137,27 @@ export default function Home() {
       alert(`Verification failed`);
     }
   }
+
+  const handleVerifyActivity = async (activity: string) => {
+
+
+    console.log(activity)
+    try {
+      const activityPrompt = `これ${activity}ですか？正しい場合はtrue, 間違っている場合はfalseをjsonで返して　例 {"result": true}`
+      const res = await fetch(`/api/activity?prompt=${activityPrompt}`)
+      if (!res.ok) {
+        throw new Error('API request failed');
+      }
+
+      const json = await res.json();
+      console.log(json);
+
+      const content = JSON.parse(json.message.content).result;
+      console.log(content);
+    } catch (error) {
+      console.error(error)
+    }
+  }
   const handlePromptChange = (event: any) => {
     setPrompt(event.target.value);
   };
@@ -152,7 +173,7 @@ export default function Home() {
         <ul className="schedule-list" id="schedule">
           {schedule.map((item) => {
             return (
-              <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
+              <ScheduleItem {...item} key={item.time} onVerifyTime={handleVerifyTime} onVerifyActivity={handleVerifyActivity} />
             )
           })}
         </ul>
