@@ -8,7 +8,6 @@ type Schedule = {
   location: string;
   image?: string;
   onVerify: () => void;
-  onImage: (arg0: string) => void;
 };
 
 export default function ScheduleItem({ time, value, location, onVerify, onImage }: Schedule) {
