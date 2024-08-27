@@ -19,6 +19,16 @@
   position: relative;
   display: flex;
   justify-content: space-between;
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  flex-flow: column;
+  justify-content: start;
+  align-items: flex-start;
+  row-gap: 10px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .scheduleItem:last-child {
@@ -28,4 +38,11 @@
 .verifyButtons {
   display: flex;
   column-gap: 10px;
+}
+.image {
+  max-width: 50px;
+}
+.container {
+  display: flex;
+  align-items: center;
 }

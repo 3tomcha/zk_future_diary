@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import ZkappWorkerClient from "../zkappWorkerClient";
 import { Field, PublicKey, Signature } from "o1js";
 import ScheduleItem from "@/components/ScheduleItem";
-import { useGenerateschedule } from "@/hooks/useGenerateSchedule";
+import { Schedule, useGenerateschedule } from "@/hooks/useGenerateSchedule";
+import { useGenerateImage } from "@/hooks/useGenerateImage";
 
 const mockSchedule = [
   { "time": "00:00", "value": "睡眠" },
@@ -65,6 +66,7 @@ export default function Home() {
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const { schedule, fetchSchedule, setSchedule } = useGenerateschedule();
+  const [randomIndex, setRandomIndex] = useState(-1);
 
   useEffect(() => {
     (async () => {
@@ -137,7 +139,7 @@ export default function Home() {
     await fetchSchedule(prompt);
     setLoading(false);
   }
-  console.log(schedule)
+
   if (schedule && schedule.length > 0) {
     return (
       <div className="container">
