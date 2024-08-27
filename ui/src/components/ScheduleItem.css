@@ -1,0 +1,31 @@
+.schedule-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.time {
+  font-weight: bold;
+  color: #4285F4;
+}
+
+.activity {
+  margin-left: 20px;
+}
+
+.schedule-item {
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.verify-buttons {
+  display: flex;
+  column-gap: 10px;
+}
