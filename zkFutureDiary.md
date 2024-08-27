@@ -4,55 +4,55 @@ theme: default
 headingDivider: 1
 ---
 
-# ZK Mirai Nikki
-
-## A Zero-Knowledge Proof Application for Privacy-Preserving Location Sharing
-
+# ZK Future Diary
+## Your New Way to Design the Future
 ### Presented by: Tomoya Kobayashi
 
 ---
 
-## ZK Mirai Nikki is ...
-### Goal Achievement Engine with AI & Zero-Knowledge
-With AI automatically creating schedules based on your goals, you simply input your objectives and follow the plan to achieve them, all while Zero-Knowledge Proofs ensure your privacy throughout the process.
+## To design your future, your first need is a goal, right?
 
 ---
 
+## Do you really want to go through the hassle?  
+## Do you want to create a whole schedule just to reach that goal? 
+
+---
+
+## ZK Future Diary ...
+### Goal Achievement Engine with AI & Zero-Knowledge
+AI automatically creates schedules based on your goals. You just input your goals, follow the plan, and achieve your objectives, all while your privacy is protected.
+
+---
+## Example
+If you want to diet..., This is your schedule.
+If you complete each task, verify it! Time, location, activity.
+
+![bg right:60% 100%](https://github.com/user-attachments/assets/a962c87e-3beb-4f75-83ef-fbdaebc675b5)
+
+---
 ## Key Features
 
-- **ZKP Integration:** Leverages zk-SNARKs to securely and privately verify various data, such as location, time, and images.
-- **Multi-Factor Verification:** Uses multiple axes such as location, time, and captured images to verify a single event from various perspectives.
-
-
+- **Privacy Protection:** o1js helps securely and privately verify data like location, time, and images.
+- **Multi-Factor Verification:** Combines data from location, time, and images to confirm each task from different angles.
 
 ---
-
-## Technical Overview
-
-- **Tech Stack:** Implemented in JavaScript with zk-SNARKs.
-- **Core Functionality:** Uses cryptographic proofs to validate location-based assertions.
-- **Data Flow:** User data is processed and verified through a secure cryptographic protocol.
+## Demo
+movie
 
 ---
 ### Future Vision
 
-1. **Advanced Personalization**: AI will analyze real-time behavior patterns, environments, and emotional states to create even more optimized schedules tailored to individual needs.
+1. **Personalized Schedules**: AI will watch your actions and surroundings in real-time to make better schedules just for you.
 
-2. **Dynamic Goal Adjustment**: With live data integration, AI will automatically adjust schedules in response to changing circumstances, making the path to goal achievement even more efficient.
+2. **Automatic Updates**: Just like Google Maps reroutes you when you take a different path, AI will adjust your schedule automatically to keep you on track.
 
-3. **Complete Privacy Protection**: Zero-Knowledge Proofs will become more refined, allowing every step of the goal achievement process to be verified without revealing any personal information.
+3. **Teamwork Support**: AI helps the team work together. It tells you when it’s your turn to start after someone else finishes, all while keeping everyone's privacy safe.
 
-4. **Global Collaboration**: AI will facilitate optimal teamwork among multiple users by proposing schedules that protect individual privacy while enabling efficient collaboration toward shared goals.
 
----
-
-## Conclusion
-
-- **Innovation:** Combines ZKP with real-world applications for enhanced privacy.
-- **Future Potential:** Extendable to other privacy-sensitive data verification processes.
 
 ---
-
 ## Q&A
 
 Open the floor for questions and discussions.
+Add QR

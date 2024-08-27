@@ -63,6 +63,15 @@
       "feepayerAlias": "dev2",
       "fee": "0.1",
       "smartContract": "TimeOracle"
+    },
+    "devnet3": {
+      "networkId": "testnet",
+      "url": "https://api.minascan.io/node/devnet/v1/graphql",
+      "keyPath": "keys/devnet3.json",
+      "feepayerKeyPath": "/Users/kobayashitomoya/.cache/zkapp-cli/keys/dev2.json",
+      "feepayerAlias": "dev2",
+      "fee": "0.1",
+      "smartContract": "TimeOracle"
     }
   }
 }
