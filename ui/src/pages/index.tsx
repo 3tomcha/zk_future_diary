@@ -4,6 +4,8 @@ import { Field, PublicKey, Signature } from "o1js";
 import ScheduleItem from "@/components/ScheduleItem";
 import { Schedule, useGenerateschedule } from "@/hooks/useGenerateSchedule";
 import { useGenerateImage } from "@/hooks/useGenerateImage";
+import useLocation from "@/hooks/useLocation";
+import ZkappWorkerClient2 from "@/zkappWorkerClient2";
 
 const mockSchedule = [
   { "time": "00:00", "value": "睡眠" },
@@ -34,6 +36,7 @@ const mockSchedule = [
 
 type StateType = {
   zkappWorkerClient: ZkappWorkerClient | null;
+  zkappWorkerClient2: ZkappWorkerClient2 | null;
   hasWallet: boolean | null;
   hasBeenSetup: Boolean,
   accountExists: Boolean,
@@ -51,10 +54,12 @@ async function timeout(seconds: number): Promise<void> {
   });
 }
 const ZKAPP_ADDRESS = 'B62qkKoAxSnk7cmgsvLqEVoov672nekS8iwbpPU1Wutp7AEdZwJNfYV';
+const ZKAPP_ADDRESS2 = "B62qnD8CgAE8kr48s2PTAHDtW7Vm6rNYE9r7txmEkKYUVrewvXDkotV"
 
 export default function Home() {
   const [state, setState] = useState<StateType>({
     zkappWorkerClient: null,
+    zkappWorkerClient2: null,
     hasWallet: null,
     hasBeenSetup: false,
     accountExists: false,
@@ -67,15 +72,18 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const { schedule, fetchSchedule, setSchedule } = useGenerateschedule();
   const [randomIndex, setRandomIndex] = useState(-1);
+  const { getLocation, userLatitude, userLongitude } = useLocation();
 
   useEffect(() => {
     (async () => {
       if (!state.hasBeenSetup) {
         console.log("loading web worker")
         const zkappWorkerClient = new ZkappWorkerClient()
+        const zkappWorkerClient2 = new ZkappWorkerClient2()
         await timeout(5)
         console.log("Done loading web worker")
         await zkappWorkerClient.setActiveInstanceToDevnet();
+        await zkappWorkerClient2.setActiveInstanceToDevnet();
 
         const mina = (window as any).mina
         const publicKeyBase58 = (await mina.requestAccounts())[0]
@@ -83,16 +91,23 @@ export default function Home() {
         console.log(`Using key: ${publicKey.toBase58()}`)
 
         await zkappWorkerClient.loadContract()
+        await zkappWorkerClient2.loadContract()
         console.log("compiling zkApp")
         await zkappWorkerClient.compileContract()
+        await zkappWorkerClient2.compileContract()
         console.log("compiling compiled")
         const zkAppPublicKey = PublicKey.fromBase58(ZKAPP_ADDRESS)
         await zkappWorkerClient.initZkappInstance(zkAppPublicKey)
+        const zkAppPublicKey2 = PublicKey.fromBase58(ZKAPP_ADDRESS2)
+        await zkappWorkerClient2.initZkappInstance(zkAppPublicKey2)
         console.log("Getting zkApp state...")
         await zkappWorkerClient.fetchAccount({ publicKey: zkAppPublicKey })
+        await zkappWorkerClient2.fetchAccount({ publicKey: zkAppPublicKey })
+
         setState({
           ...state,
           zkappWorkerClient,
+          zkappWorkerClient2,
           hasWallet: true,
           hasBeenSetup: true,
           publicKey,
@@ -101,7 +116,7 @@ export default function Home() {
     })()
   }, [])
 
-  const handleVerify = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
+  const handleVerifyTime = async (targetStartTimestamp: Number, targetEndTimestamp: Number) => {
     try {
       const timestamp = Math.floor(new Date().getTime() / 1000)
       const response = await fetch(`/api/time?timestamp=${timestamp}`)
@@ -145,6 +160,44 @@ export default function Home() {
     await fetchSchedule(prompt);
     setLoading(false);
   }
+  const handleVerifyLocation = () => {
+    getLocation()
+  }
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(`/api/location?lat=${userLatitude}&lng=${userLongitude}`)
+      console.log(res)
+      const json = await res.json()
+      console.log(json)
+
+      const latBigInt = Math.round(userLatitude * 100000);
+      const lngBigInt = Math.round(userLongitude * 100000);
+
+      const args = {
+        signature: json.signature,
+        userLatitude: latBigInt,
+        userLongitude: lngBigInt,
+      }
+      await state.zkappWorkerClient2!.createUpdateTransaction(
+        args
+      );
+      console.log('Creating proof...');
+      await state.zkappWorkerClient2!.proveUpdateTransaction();
+
+      console.log('Requesting send transaction...');
+      const transactionJSON = await state.zkappWorkerClient2!.getTransactionJSON();
+
+      console.log('Getting transaction JSON...');
+      const { hash } = await (window as any).mina.sendTransaction({
+        transaction: transactionJSON,
+        feePayer: {
+          fee: 0.1,
+          memo: '',
+        },
+      });
+      console.log(hash)
+    })()
+  }, [userLatitude, userLongitude])
 
   if (schedule && schedule.length > 0) {
     return (
@@ -152,7 +205,7 @@ export default function Home() {
         <ul className="schedule-list" id="schedule">
           {schedule.map((item) => {
             return (
-              <ScheduleItem {...item} key={item.time} onVerify={handleVerify} />
+              <ScheduleItem {...item} key={item.time} onVerifyTime={handleVerifyTime} onVerifyLocation={handleVerifyLocation} />
             )
           })}
         </ul>

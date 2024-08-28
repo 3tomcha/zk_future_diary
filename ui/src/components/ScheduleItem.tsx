@@ -7,7 +7,8 @@ type Schedule = {
   value: string;
   location: string;
   image?: string;
-  onVerify: (startTimestamp: Number, endTimestamp: Number) => void;
+  onVerifyTime: (startTimestamp: Number, endTimestamp: Number) => void;
+  onVerifyLocation: () => void
 };
 
 function convertTimeToTimestamp(time: string): number {
@@ -24,7 +25,7 @@ function convertTimeToTimestamp(time: string): number {
   return Math.floor(today.getTime() / 1000);
 }
 
-export default function ScheduleItem({ time, value, location, onVerify }: Schedule) {
+export default function ScheduleItem({ time, value, location, onVerifyTime, onVerifyLocation }: Schedule) {
   const { image, fetchImage } = useGenerateImage();
   const handleImage = async () => {
     await fetchImage(value)
@@ -32,7 +33,10 @@ export default function ScheduleItem({ time, value, location, onVerify }: Schedu
   const handleVerifyTime = () => {
     const startTimestamp = convertTimeToTimestamp(time);
     const endTimestamp = convertTimeToTimestamp(time) + 3600;
-    onVerify(startTimestamp, endTimestamp)
+    onVerifyTime(startTimestamp, endTimestamp)
+  }
+  const handleVerifyLocation = () => {
+    onVerifyLocation()
   }
   return (
     <>
@@ -47,7 +51,7 @@ export default function ScheduleItem({ time, value, location, onVerify }: Schedu
           <button onClick={handleImage}>create image</button>
           <button className={styles.verify} onClick={handleVerifyTime}>verify time</button>
           <button className={styles.verify} onClick={handleVerifyTime}>verify activity</button>
-          <button className={styles.verify} onClick={handleVerifyTime}>verify location</button>
+          <button className={styles.verify} onClick={handleVerifyLocation}>verify location</button>
         </div>
       </li>
     </>
